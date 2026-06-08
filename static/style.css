@@ -231,6 +231,65 @@ small { font-size: 0.78em; }
 .logout-link:hover { color: var(--accent-h); }
 
 /* ============================================================
+   LANGUAGE SWITCHER
+   ============================================================ */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 2px 3px;
+}
+
+.lang-btn {
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: background 0.14s, color 0.14s;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.lang-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+}
+
+.lang-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Login page variant — centred above the card */
+.lang-switcher-login {
+  justify-content: center;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  gap: 6px;
+}
+
+.lang-switcher-login .lang-btn {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 0.82rem;
+}
+
+.lang-switcher-login .lang-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ============================================================
    EMPLOYEE DASHBOARD — MAIN
    ============================================================ */
 .dash-main {

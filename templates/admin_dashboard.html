@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Admin Dashboard — Spati Scheduler{% endblock %}
+{% block title %}{{ t.page_admin }}{% endblock %}
 
 {% block head %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -11,11 +11,22 @@
   <!-- ── Top app header ──────────────────────────────────────────── -->
   <header class="dash-header">
     <div class="header-left">
-      <span class="logo-text">🏪 Spati Scheduler — Admin</span>
+      <span class="logo-text">🏪 Spati Scheduler — {{ t.admin_label }}</span>
     </div>
     <div class="header-right">
-      <span class="week-badge">Week of {{ week_start_display }}</span>
-      <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
+      <span class="week-badge">{{ t.week_of }} {{ week_start_display }}</span>
+
+      <!-- Language switcher -->
+      <div class="lang-switcher">
+        <a href="{{ url_for('lang.set_language', code='en') }}"
+           class="lang-btn{% if current_lang == 'en' %} active{% endif %}">🇬🇧</a>
+        <a href="{{ url_for('lang.set_language', code='de') }}"
+           class="lang-btn{% if current_lang == 'de' %} active{% endif %}">🇩🇪</a>
+        <a href="{{ url_for('lang.set_language', code='tr') }}"
+           class="lang-btn{% if current_lang == 'tr' %} active{% endif %}">🇹🇷</a>
+      </div>
+
+      <a href="{{ url_for('auth.logout') }}" class="logout-link">{{ t.logout }}</a>
     </div>
   </header>
 
@@ -28,7 +39,7 @@
       data-branch-name="{{ branch.name }}"
     >{{ branch.name }}</button>
     {% else %}
-    <span class="branch-tab-empty">No branches — run seed.py first.</span>
+    <span class="branch-tab-empty">{{ t.no_branches }}</span>
     {% endfor %}
   </nav>
 
@@ -38,13 +49,13 @@
 
       <!-- ── LEFT: Employee selector ─────────────────────────────── -->
       <aside class="panel-left">
-        <h3>Employees</h3>
-        <p class="panel-hint">Select to overlay availability</p>
+        <h3>{{ t.employees }}</h3>
+        <p class="panel-hint">{{ t.overlay_hint }}</p>
         <input
           type="text"
           id="employee-search"
           class="search-input"
-          placeholder="🔍 Search employees…"
+          placeholder="{{ t.search_placeholder }}"
           autocomplete="off"
         />
         <ul id="employee-list" class="employee-list">
@@ -55,16 +66,16 @@
             data-name="{{ emp.full_name }}"
           >{{ emp.full_name }}</li>
           {% else %}
-          <li class="employee-empty">No employees found.<br>Run seed.py first.</li>
+          <li class="employee-empty">{{ t.no_employees }}</li>
           {% endfor %}
         </ul>
 
         <!-- Colour legend -->
         <div class="panel-legend">
-          <div class="legend-row"><span class="swatch swatch-avail"></span>Available</div>
-          <div class="legend-row"><span class="swatch swatch-unavail"></span>Unavailable / Conflict</div>
-          <div class="legend-row"><span class="swatch swatch-assigned"></span>Assigned here</div>
-          <div class="legend-row"><span class="swatch swatch-neutral"></span>No selection</div>
+          <div class="legend-row"><span class="swatch swatch-avail"></span>{{ t.legend_available }}</div>
+          <div class="legend-row"><span class="swatch swatch-unavail"></span>{{ t.legend_unavail }}</div>
+          <div class="legend-row"><span class="swatch swatch-assigned"></span>{{ t.legend_assigned }}</div>
+          <div class="legend-row"><span class="swatch swatch-neutral"></span>{{ t.legend_neutral }}</div>
         </div>
       </aside>
 
@@ -72,7 +83,7 @@
       <section class="panel-right">
 
         <div class="panel-right-controls">
-          <button id="export-btn" class="btn-export">📤 Export as Image</button>
+          <button id="export-btn" class="btn-export">📤 {{ t.export_image }}</button>
         </div>
 
         <!-- Everything inside #export-target is captured by html2canvas -->
@@ -83,7 +94,7 @@
             <span id="export-branch-name" class="cal-branch-title">
               {% if branches %}{{ branches[0].name }}{% endif %}
             </span>
-            <span class="cal-week-label">Week: {{ week_start_display }}</span>
+            <span class="cal-week-label">{{ t.week }}: {{ week_start_display }}</span>
           </div>
 
           <div class="calendar-wrapper">
@@ -139,6 +150,14 @@
 <script>
   const WEEK_START = "{{ week_start }}";
   const PAGE_TYPE  = "admin";
+  const T = {
+    toast_saved:        "{{ t.toast_saved | e }}",
+    toast_save_err:     "{{ t.toast_save_err | e }}",
+    toast_net_err:      "{{ t.toast_net_err | e }}",
+    toast_colour_saved: "{{ t.toast_colour_saved | e }}",
+    toast_colour_err:   "{{ t.toast_colour_err | e }}",
+    conflict_msg:       "{{ t.conflict_msg | e }}",
+  };
 </script>
 <script src="{{ url_for('static', filename='calendar.js') }}"></script>
 {% endblock %}

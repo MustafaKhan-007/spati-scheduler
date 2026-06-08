@@ -7,15 +7,9 @@ from flask_login import login_required, current_user
 import re
 
 from models import db, Availability
+from translations import get_t
 
 employee_bp = Blueprint("employee", __name__, url_prefix="/employee")
-
-DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-SLOTS = [
-    {"key": "morning", "label": "Morning", "time": "06:00–14:00"},
-    {"key": "evening", "label": "Evening", "time": "14:00–22:00"},
-    {"key": "night",   "label": "Night",   "time": "22:00–06:00"},
-]
 
 
 def employee_required(f):
@@ -38,14 +32,22 @@ def get_week_start() -> date:
 @login_required
 @employee_required
 def dashboard():
+    t          = get_t()
     week_start = get_week_start()
-    week_end = week_start + timedelta(days=6)
+    week_end   = week_start + timedelta(days=6)
+
+    day_names = t["days"]
+    slots = [
+        {"key": "morning", "label": t["slot_morning"], "time": "06:00–14:00"},
+        {"key": "evening", "label": t["slot_evening"], "time": "14:00–22:00"},
+        {"key": "night",   "label": t["slot_night"],   "time": "22:00–06:00"},
+    ]
 
     days = [
         {
             "index": i,
-            "name": DAY_NAMES[i],
-            "date": (week_start + timedelta(days=i)).strftime("%d.%m"),
+            "name":  day_names[i],
+            "date":  (week_start + timedelta(days=i)).strftime("%d.%m"),
         }
         for i in range(7)
     ]

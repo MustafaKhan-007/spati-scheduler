@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from models import User
+from translations import get_t
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -33,7 +34,7 @@ def login():
                 return redirect(url_for("admin.dashboard"))
             return redirect(url_for("employee.dashboard"))
 
-        flash("Invalid username or password.", "error")
+        flash(get_t()["invalid_credentials"], "error")
 
     return render_template("login.html")
 

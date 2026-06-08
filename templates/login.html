@@ -1,42 +1,52 @@
 {% extends 'base.html' %}
-{% block title %}Login — Spati Scheduler{% endblock %}
+{% block title %}{{ t.page_login }}{% endblock %}
 
 {% block content %}
 <div class="login-page">
   <div class="login-card">
 
+    <!-- Language switcher -->
+    <div class="lang-switcher lang-switcher-login">
+      <a href="{{ url_for('lang.set_language', code='en') }}"
+         class="lang-btn{% if current_lang == 'en' %} active{% endif %}">🇬🇧 EN</a>
+      <a href="{{ url_for('lang.set_language', code='de') }}"
+         class="lang-btn{% if current_lang == 'de' %} active{% endif %}">🇩🇪 DE</a>
+      <a href="{{ url_for('lang.set_language', code='tr') }}"
+         class="lang-btn{% if current_lang == 'tr' %} active{% endif %}">🇹🇷 TR</a>
+    </div>
+
     <div class="login-logo">
       <span class="logo-icon">🏪</span>
       <h1>Spati Scheduler</h1>
-      <p>Employee scheduling for your store</p>
+      <p>{{ t.login_subtitle }}</p>
     </div>
 
     <form method="POST" action="{{ url_for('auth.login') }}">
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="username">{{ t.username }}</label>
         <input
           type="text"
           id="username"
           name="username"
-          placeholder="Enter your username"
+          placeholder="{{ t.username_placeholder }}"
           autocomplete="username"
           required
         />
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">{{ t.password }}</label>
         <input
           type="password"
           id="password"
           name="password"
-          placeholder="Enter your password"
+          placeholder="{{ t.password_placeholder }}"
           autocomplete="current-password"
           required
         />
       </div>
 
-      <button type="submit" class="btn-primary">Log In</button>
+      <button type="submit" class="btn-primary">{{ t.login_btn }}</button>
     </form>
 
   </div>

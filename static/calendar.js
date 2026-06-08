@@ -80,9 +80,9 @@ function saveAccentColor(color) {
   })
     .then(function (r) { return r.json(); })
     .then(function (data) {
-      if (data.status === "ok") showToast("✓ Accent colour saved!", "success");
+      if (data.status === "ok") showToast(T.toast_colour_saved, "success");
     })
-    .catch(function () { showToast("✗ Could not save colour.", "error"); });
+    .catch(function () { showToast(T.toast_colour_err, "error"); });
 }
 
 function highlightSwatch(color) {
@@ -121,12 +121,12 @@ function saveMyAvailability() {
     .then(function (r) { return r.json(); })
     .then(function (data) {
       if (data.status === "ok") {
-        showToast("✓ Availability saved!", "success");
+        showToast(T.toast_saved, "success");
       } else {
-        showToast("✗ Could not save. Try again.", "error");
+        showToast(T.toast_save_err, "error");
       }
     })
-    .catch(function () { showToast("✗ Network error.", "error"); });
+    .catch(function () { showToast(T.toast_net_err, "error"); });
 }
 
 /* ============================================================
@@ -368,7 +368,9 @@ function onAdminCellClick(cell) {
 
       } else if (data.error === "conflict") {
         showToast(
-          "✗ " + activeUserName + " is already assigned to \"" + data.branch_name + "\" for this slot.",
+          T.conflict_msg
+            .replace("{name}",   activeUserName)
+            .replace("{branch}", data.branch_name),
           "error"
         );
       }

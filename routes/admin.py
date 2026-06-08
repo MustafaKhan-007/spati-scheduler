@@ -5,15 +5,9 @@ from flask import Blueprint, render_template, request, jsonify, redirect, url_fo
 from flask_login import login_required, current_user
 
 from models import db, User, Branch, Availability, Shift
+from translations import get_t
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
-
-DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-SLOTS = [
-    {"key": "morning", "label": "Morning", "time": "06:00–14:00"},
-    {"key": "evening", "label": "Evening", "time": "14:00–22:00"},
-    {"key": "night",   "label": "Night",   "time": "22:00–06:00"},
-]
 
 
 def admin_required(f):
@@ -36,15 +30,23 @@ def get_week_start() -> date:
 @login_required
 @admin_required
 def dashboard():
+    t          = get_t()
     week_start = get_week_start()
 
     employees = User.query.filter_by(role="employee").order_by(User.full_name).all()
     branches  = Branch.query.order_by(Branch.name).all()
 
+    day_names = t["days"]
+    slots = [
+        {"key": "morning", "label": t["slot_morning"], "time": "06:00–14:00"},
+        {"key": "evening", "label": t["slot_evening"], "time": "14:00–22:00"},
+        {"key": "night",   "label": t["slot_night"],   "time": "22:00–06:00"},
+    ]
+
     days = [
         {
             "index": i,
-            "name":  DAY_NAMES[i],
+            "name":  day_names[i],
             "date":  (week_start + timedelta(days=i)).strftime("%d.%m"),
         }
         for i in range(7)
@@ -57,7 +59,7 @@ def dashboard():
         week_start=week_start.strftime("%Y-%m-%d"),
         week_start_display=week_start.strftime("%d.%m.%Y"),
         days=days,
-        slots=SLOTS,
+        slots=slots,
     )
 
 

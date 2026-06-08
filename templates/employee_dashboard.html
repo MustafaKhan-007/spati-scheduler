@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}My Availability — Spati Scheduler{% endblock %}
+{% block title %}{{ t.page_employee }}{% endblock %}
 
 {% block content %}
 <div class="dashboard-layout">
@@ -9,15 +9,26 @@
       <span class="logo-text">🏪 Spati Scheduler</span>
     </div>
     <div class="header-right">
-      <span class="greeting">Hey, {{ current_user.full_name }} 👋</span>
-      <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
+      <span class="greeting">{{ t.greeting }}, {{ current_user.full_name }} 👋</span>
+
+      <!-- Language switcher -->
+      <div class="lang-switcher">
+        <a href="{{ url_for('lang.set_language', code='en') }}"
+           class="lang-btn{% if current_lang == 'en' %} active{% endif %}">🇬🇧</a>
+        <a href="{{ url_for('lang.set_language', code='de') }}"
+           class="lang-btn{% if current_lang == 'de' %} active{% endif %}">🇩🇪</a>
+        <a href="{{ url_for('lang.set_language', code='tr') }}"
+           class="lang-btn{% if current_lang == 'tr' %} active{% endif %}">🇹🇷</a>
+      </div>
+
+      <a href="{{ url_for('auth.logout') }}" class="logout-link">{{ t.logout }}</a>
     </div>
   </header>
 
   <main class="dash-main">
-    <h2>Set Your Availability</h2>
+    <h2>{{ t.my_availability }}</h2>
     <p class="week-label">
-      Week: <strong>{{ week_start_display }}</strong> – <strong>{{ week_end_display }}</strong>
+      {{ t.week }}: <strong>{{ week_start_display }}</strong> – <strong>{{ week_end_display }}</strong>
     </p>
 
     <div class="calendar-wrapper">
@@ -56,14 +67,14 @@
     </div>
 
     <div class="action-row">
-      <button id="save-btn" class="btn-primary">💾 Save Availability</button>
+      <button id="save-btn" class="btn-primary">💾 {{ t.save_availability }}</button>
     </div>
 
     <!-- ── Accent colour picker ─────────────────────────────── -->
     <div class="accent-picker-card">
       <div class="accent-picker-header">
-        <span class="accent-picker-title">Your Accent Colour</span>
-        <span class="accent-picker-hint">Shown on your name tags in the schedule</span>
+        <span class="accent-picker-title">{{ t.accent_colour_title }}</span>
+        <span class="accent-picker-hint">{{ t.accent_colour_hint }}</span>
       </div>
       <div class="color-swatches" id="color-swatches">
         <button class="color-swatch" data-color="#6366f1" style="background:#6366f1;" title="Indigo"></button>
@@ -91,6 +102,14 @@
 <script>
   const WEEK_START = "{{ week_start }}";
   const PAGE_TYPE  = "employee";
+  const T = {
+    toast_saved:        "{{ t.toast_saved | e }}",
+    toast_save_err:     "{{ t.toast_save_err | e }}",
+    toast_net_err:      "{{ t.toast_net_err | e }}",
+    toast_colour_saved: "{{ t.toast_colour_saved | e }}",
+    toast_colour_err:   "{{ t.toast_colour_err | e }}",
+    conflict_msg:       "{{ t.conflict_msg | e }}",
+  };
 </script>
 <script src="{{ url_for('static', filename='calendar.js') }}"></script>
 {% endblock %}

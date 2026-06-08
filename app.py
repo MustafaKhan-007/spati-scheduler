@@ -39,10 +39,24 @@ def create_app():
     from routes.auth import auth_bp
     from routes.employee import employee_bp
     from routes.admin import admin_bp
+    from routes.lang import lang_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(employee_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(lang_bp)
+
+    # Inject translations + current language into every template context
+    from flask import session as _session
+    from translations import TRANSLATIONS
+
+    @app.context_processor
+    def inject_i18n():
+        lang = _session.get("lang", "en")
+        return {
+            "t":            TRANSLATIONS.get(lang, TRANSLATIONS["en"]),
+            "current_lang": lang,
+        }
 
     with app.app_context():
         db.create_all()
