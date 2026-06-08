@@ -332,10 +332,10 @@ small { font-size: 0.78em; }
   background: var(--bg-dark);
   padding: 13px 14px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--text-muted);
+  color: #ffffff;
   text-align: center;
   border-bottom: 1px solid var(--border);
 }
@@ -790,7 +790,7 @@ small { font-size: 0.78em; }
 
 #export-target .calendar-table thead th {
   background: var(--bg-dark);
-  color: var(--text-muted);
+  color: #ffffff;
   border-bottom-color: var(--border);
 }
 

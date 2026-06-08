@@ -38,9 +38,9 @@ def dashboard():
 
     day_names = t["days"]
     slots = [
-        {"key": "morning", "label": t["slot_morning"], "time": "06:00–14:00"},
-        {"key": "evening", "label": t["slot_evening"], "time": "14:00–22:00"},
-        {"key": "night",   "label": t["slot_night"],   "time": "22:00–06:00"},
+        {"key": "night",   "label": t["slot_night"],   "time": "00:00–08:00"},
+        {"key": "morning", "label": t["slot_morning"], "time": "08:00–16:00"},
+        {"key": "evening", "label": t["slot_evening"], "time": "16:00–00:00"},
     ]
 
     days = [
