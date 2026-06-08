@@ -46,8 +46,25 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        _ensure_branches()
 
     return app
+
+
+def _ensure_branches():
+    """Add any missing default branches on startup (idempotent)."""
+    from models import Branch
+    defaults = [
+        {"name": "Spati Mitte", "location": "Berlin Mitte"},
+        {"name": "Frankfurt",   "location": "Frankfurt am Main"},
+    ]
+    changed = False
+    for b in defaults:
+        if not Branch.query.filter_by(name=b["name"]).first():
+            db.session.add(Branch(**b))
+            changed = True
+    if changed:
+        db.session.commit()
 
 
 app = create_app()

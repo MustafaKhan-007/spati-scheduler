@@ -356,16 +356,39 @@ function doExport() {
     return;
   }
 
-  // Snapshot the calendar in export (light) mode temporarily
-  target.classList.add("exporting");
+  // Strip availability overlay for a clean schedule export.
+  // Cells assigned HERE keep their blue; everything else goes neutral.
+  var cells    = Array.from(document.querySelectorAll(".admin-cell"));
+  var snapshot = cells.map(function (cell) {
+    return {
+      available:   cell.classList.contains("available"),
+      unavail:     cell.classList.contains("unavail"),
+    };
+  });
+  cells.forEach(function (cell) {
+    if (!cell.classList.contains("cell-assigned-here")) {
+      cell.classList.remove("available", "unavail");
+      cell.classList.add("cell-neutral");
+    }
+  });
+
+  function restoreCells() {
+    cells.forEach(function (cell, i) {
+      if (!cell.classList.contains("cell-assigned-here")) {
+        cell.classList.remove("cell-neutral");
+        if (snapshot[i].available) cell.classList.add("available");
+        if (snapshot[i].unavail)   cell.classList.add("unavail");
+      }
+    });
+  }
 
   html2canvas(target, {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1c1c38",
     scale:           2,
     useCORS:         true,
     logging:         false,
   }).then(function (canvas) {
-    target.classList.remove("exporting");
+    restoreCells();
 
     var safeBranch = activeBranchName.replace(/\s+/g, "_");
     var filename   = "schedule_" + WEEK_START + "_" + safeBranch + ".png";
@@ -375,7 +398,7 @@ function doExport() {
     link.href     = canvas.toDataURL("image/png");
     link.click();
   }).catch(function (err) {
-    target.classList.remove("exporting");
+    restoreCells();
     console.error("Export error:", err);
     alert("Export failed. Please try again.");
   });

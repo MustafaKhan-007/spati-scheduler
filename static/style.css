@@ -385,43 +385,49 @@ small { font-size: 0.78em; }
 }
 
 /* ============================================================
-   BRANCH TAB BAR
+   BRANCH TAB BAR  (Chrome-style)
    ============================================================ */
 .branch-tab-bar {
-  background: var(--bg-medium);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
+  background: #0e0e24;
+  padding: 10px 24px 0;
   display: flex;
   align-items: flex-end;
-  gap: 4px;
+  gap: 3px;
   flex-shrink: 0;
+  border-bottom: 2px solid var(--border);
 }
 
 .branch-tab {
-  padding: 11px 22px 10px;
-  background: transparent;
+  position: relative;
+  bottom: -2px;           /* sit over the border-bottom of the bar */
+  padding: 9px 26px 10px;
+  min-width: 130px;
+  text-align: center;
+  background: #1a1a32;
   color: var(--text-muted);
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
   border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  font-size: 0.9rem;
+  border-radius: 10px 10px 0 0;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-  position: relative;
-  bottom: -1px;
+  transition: background 0.14s, color 0.14s;
+  /* subtle inner-shadow to mimic depth */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-.branch-tab:hover {
-  background: rgba(255, 255, 255, 0.05);
+.branch-tab:not(.active):hover {
+  background: #1e1e3e;
   color: var(--text-light);
 }
 
 .branch-tab.active {
-  background: var(--bg-dark);
+  background: var(--bg-dark);           /* #1a1a2e — matches admin-main */
   color: var(--text-light);
   border-color: var(--border);
-  border-bottom-color: var(--bg-dark);
+  border-bottom: 2px solid var(--bg-dark); /* hides the bar's bottom border */
+  z-index: 1;
+  box-shadow: inset 0 2px 0 var(--accent);  /* accent top-stripe */
 }
 
 .branch-tab-empty {
@@ -656,54 +662,28 @@ small { font-size: 0.78em; }
   letter-spacing: 0.2px;
 }
 
-/* ── Export (light-mode) overrides ────────────────────────── */
-#export-target.exporting {
-  background: #ffffff;
+/* ── Export-target: dark overrides for table internals ────── */
+#export-target .calendar-wrapper {
+  background: var(--bg-medium);
+  border-color: var(--border);
 }
 
-#export-target.exporting .cal-branch-header {
-  border-bottom-color: #cdd;
+#export-target .calendar-table thead th {
+  background: var(--bg-dark);
+  color: var(--text-muted);
+  border-bottom-color: var(--border);
 }
 
-#export-target.exporting .cal-branch-title {
-  color: #1a1a2e;
+#export-target .calendar-table td {
+  border-color: var(--border);
 }
 
-#export-target.exporting .cal-week-label {
-  color: #666;
+#export-target .day-label {
+  background: var(--bg-medium) !important;
+  color: var(--text-light);
 }
 
-#export-target.exporting .calendar-wrapper {
-  background: #fff;
-  border-color: #ccd;
-}
-
-#export-target.exporting .calendar-table thead th {
-  background: #f2f2f8;
-  color: #333;
-  border-bottom-color: #ccd;
-}
-
-#export-target.exporting .calendar-table td {
-  border-color: #ccd;
-}
-
-#export-target.exporting .day-label {
-  background: #f8f8fc !important;
-  color: #1a1a2e;
-}
-
-#export-target.exporting .day-label small { color: #666; }
-
-#export-target.exporting .calendar-cell.cell-neutral      { background-color: #f3f3f9; }
-#export-target.exporting .calendar-cell.available         { background-color: #bbf7d0; }
-#export-target.exporting .calendar-cell.unavail           { background-color: #fecaca; }
-#export-target.exporting .calendar-cell.cell-assigned-here { background-color: #bfdbfe; }
-
-#export-target.exporting .cell-name {
-  color: #1a1a2e;
-  background: rgba(0, 0, 0, 0.10);
-}
+#export-target .day-label small { color: var(--text-muted); }
 
 /* ============================================================
    RESPONSIVE
@@ -716,7 +696,7 @@ small { font-size: 0.78em; }
   .dash-header      { padding: 12px 16px; }
   .dash-main        { padding: 20px 14px; }
   .admin-main       { padding: 14px; }
-  .branch-tab-bar   { padding: 0 14px; }
+  .branch-tab-bar   { padding: 8px 14px 0; }
 
   .admin-panels {
     grid-template-columns: 1fr;
@@ -751,5 +731,5 @@ small { font-size: 0.78em; }
   }
 
   .cell-name      { font-size: 0.62rem; }
-  .branch-tab     { padding: 8px 12px; font-size: 0.82rem; }
+  .branch-tab     { padding: 7px 14px; font-size: 0.82rem; min-width: 90px; }
 }
