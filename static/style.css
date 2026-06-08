@@ -10,6 +10,7 @@
   --text-muted: #9090b0;
   --available:  #2d6a4f;
   --unavail:    #9b2226;
+  --assigned:   #1e3a6e;   /* blue — assigned to this branch */
   --border:     #2a2a4a;
   --radius:     8px;
 }
@@ -312,7 +313,7 @@ small { font-size: 0.78em; }
 
 .calendar-cell {
   min-width: 80px;
-  height: 64px;
+  height: 70px;
   text-align: center;
   vertical-align: middle;
   position: relative;
@@ -384,6 +385,52 @@ small { font-size: 0.78em; }
 }
 
 /* ============================================================
+   BRANCH TAB BAR
+   ============================================================ */
+.branch-tab-bar {
+  background: var(--bg-medium);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.branch-tab {
+  padding: 11px 22px 10px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  position: relative;
+  bottom: -1px;
+}
+
+.branch-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-light);
+}
+
+.branch-tab.active {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  border-color: var(--border);
+  border-bottom-color: var(--bg-dark);
+}
+
+.branch-tab-empty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding: 10px 0;
+}
+
+/* ============================================================
    ADMIN DASHBOARD — LAYOUT
    ============================================================ */
 .admin-main {
@@ -393,7 +440,7 @@ small { font-size: 0.78em; }
 
 .admin-panels {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 240px 1fr;
   gap: 22px;
   align-items: start;
 }
@@ -423,6 +470,13 @@ small { font-size: 0.78em; }
   border-bottom: 1px solid var(--border);
 }
 
+.panel-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: -8px;
+  line-height: 1.4;
+}
+
 .search-input {
   width: 100%;
   padding: 9px 12px;
@@ -435,8 +489,8 @@ small { font-size: 0.78em; }
   transition: border-color 0.2s ease;
 }
 
-.search-input:focus    { border-color: var(--accent); }
-.search-input::placeholder { color: #4a4a6a; }
+.search-input:focus         { border-color: var(--accent); }
+.search-input::placeholder  { color: #4a4a6a; }
 
 .employee-list {
   list-style: none;
@@ -465,42 +519,50 @@ small { font-size: 0.78em; }
   line-height: 1.6;
 }
 
+/* ── Panel legend ──────────────────────────────────────────── */
+.panel-legend {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.swatch-avail    { background: var(--available); }
+.swatch-unavail  { background: var(--unavail); }
+.swatch-assigned { background: var(--assigned); border: 1px solid #3b6cb0; }
+.swatch-neutral  { background: #2a2a4a; border: 1px solid #3a3a5a; }
+
 /* ── RIGHT PANEL ───────────────────────────────────────────── */
 .panel-right {
   background: var(--bg-medium);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 22px 22px 26px;
+  padding: 20px 20px 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
-.panel-right-header {
+.panel-right-controls {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.branch-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.88rem;
-  color: var(--text-muted);
-}
-
-.select-input {
-  padding: 7px 12px;
-  background: var(--bg-dark);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-light);
-  font-size: 0.9rem;
-  outline: none;
-  cursor: pointer;
+  justify-content: flex-end;
 }
 
 .btn-export {
@@ -517,127 +579,144 @@ small { font-size: 0.78em; }
 
 .btn-export:hover { background: var(--accent-h); }
 
-.no-employee-msg {
-  text-align: center;
-  color: #4a4a6a;
-  font-size: 0.95rem;
-  padding: 56px 20px;
-  border: 2px dashed var(--border);
-  border-radius: 10px;
-}
-
-/* ── EXPORT TARGET (calendar printed to PNG) ─────────────── */
+/* ── Export target ─────────────────────────────────────────── */
 #export-target {
-  background: #ffffff;
+  background: #1c1c38;
   border-radius: 10px;
-  padding: 22px 20px 18px;
+  padding: 22px 20px 20px;
   overflow-x: auto;
 }
 
-.export-header {
+/* ── Calendar branch header (large title inside export-target) */
+.cal-branch-header {
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #dde;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
 }
 
-.export-name {
-  font-size: 1.1rem;
+.cal-branch-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-light);
+  letter-spacing: -0.3px;
+  text-transform: uppercase;
+}
+
+.cal-week-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Admin cell interactivity ──────────────────────────────── */
+.admin-cell {
+  cursor: default;
+  position: relative;
+}
+
+.admin-cell.available { cursor: pointer; }
+.admin-cell.cell-assigned-here { cursor: pointer; }
+
+.admin-cell.available:hover,
+.admin-cell.cell-assigned-here:hover { filter: brightness(1.22); }
+
+/* ── Cell colour states ────────────────────────────────────── */
+.calendar-cell.cell-neutral      { background-color: #22224a; }
+.calendar-cell.cell-assigned-here { background-color: var(--assigned); }
+
+/* ── Names inside cells ────────────────────────────────────── */
+.cell-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 4px;
+  min-height: 52px;
+  width: 100%;
+}
+
+.cell-name {
+  display: block;
+  font-size: 0.7rem;
   font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.30);
+  padding: 2px 7px;
+  border-radius: 3px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 96%;
+  letter-spacing: 0.2px;
+}
+
+/* ── Export (light-mode) overrides ────────────────────────── */
+#export-target.exporting {
+  background: #ffffff;
+}
+
+#export-target.exporting .cal-branch-header {
+  border-bottom-color: #cdd;
+}
+
+#export-target.exporting .cal-branch-title {
   color: #1a1a2e;
 }
 
-.export-week {
-  font-size: 0.82rem;
+#export-target.exporting .cal-week-label {
   color: #666;
 }
 
-/* Override dark table styles inside the white export target */
-#export-target .calendar-wrapper {
+#export-target.exporting .calendar-wrapper {
   background: #fff;
-  border: 1px solid #ccd;
-  border-radius: 8px;
-}
-
-#export-target .calendar-table thead th {
-  background: #f2f2f8;
-  color: #444;
-  border-bottom: 1px solid #ccd;
-}
-
-#export-target .calendar-table td {
   border-color: #ccd;
 }
 
-#export-target .day-label {
+#export-target.exporting .calendar-table thead th {
+  background: #f2f2f8;
+  color: #333;
+  border-bottom-color: #ccd;
+}
+
+#export-target.exporting .calendar-table td {
+  border-color: #ccd;
+}
+
+#export-target.exporting .day-label {
   background: #f8f8fc !important;
   color: #1a1a2e;
 }
 
-#export-target .day-label small { color: #666; }
+#export-target.exporting .day-label small { color: #666; }
 
-/* Admin cell interactivity */
-.admin-cell { cursor: default; position: relative; }
+#export-target.exporting .calendar-cell.cell-neutral      { background-color: #f3f3f9; }
+#export-target.exporting .calendar-cell.available         { background-color: #bbf7d0; }
+#export-target.exporting .calendar-cell.unavail           { background-color: #fecaca; }
+#export-target.exporting .calendar-cell.cell-assigned-here { background-color: #bfdbfe; }
 
-.admin-cell.available          { cursor: pointer; }
-.admin-cell[data-shift-assigned="true"] { cursor: pointer; }
-
-.admin-cell.available:hover,
-.admin-cell[data-shift-assigned="true"]:hover { filter: brightness(1.2); }
-
-/* Legend below calendar in export target */
-.legend {
-  display: flex;
-  gap: 16px;
-  margin-top: 14px;
-  font-size: 0.78rem;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #555;
-}
-
-.legend-avail::before {
-  content: "";
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background: #2d6a4f;
-}
-
-.legend-unavail::before {
-  content: "";
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background: #9b2226;
-}
-
-.legend-badge {
-  font-weight: 600;
-  color: #333;
+#export-target.exporting .cell-name {
+  color: #1a1a2e;
+  background: rgba(0, 0, 0, 0.10);
 }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-  .admin-panels {
-    grid-template-columns: 220px 1fr;
-  }
+  .admin-panels { grid-template-columns: 200px 1fr; }
 }
 
 @media (max-width: 768px) {
-  .dash-header  { padding: 12px 16px; }
-  .dash-main    { padding: 20px 14px; }
-  .admin-main   { padding: 14px; }
+  .dash-header      { padding: 12px 16px; }
+  .dash-main        { padding: 20px 14px; }
+  .admin-main       { padding: 14px; }
+  .branch-tab-bar   { padding: 0 14px; }
 
   .admin-panels {
     grid-template-columns: 1fr;
@@ -650,18 +729,20 @@ small { font-size: 0.78em; }
 
   .calendar-cell {
     min-width: 60px;
-    height: 52px;
+    min-height: 52px;
   }
 
   .header-right { gap: 12px; font-size: 0.82rem; }
   .logo-text    { font-size: 0.95rem; }
   .greeting     { display: none; }
+
+  .cal-branch-title { font-size: 1.15rem; }
 }
 
 @media (max-width: 480px) {
-  .login-card   { padding: 32px 22px; }
+  .login-card { padding: 32px 22px; }
 
-  .calendar-cell { min-width: 44px; height: 44px; }
+  .calendar-cell { min-width: 44px; min-height: 44px; }
 
   .calendar-table thead th,
   .day-label {
@@ -669,5 +750,6 @@ small { font-size: 0.78em; }
     font-size: 0.72rem;
   }
 
-  .shift-badge { font-size: 0.62rem; padding: 1px 4px; }
+  .cell-name      { font-size: 0.62rem; }
+  .branch-tab     { padding: 8px 12px; font-size: 0.82rem; }
 }

@@ -8,6 +8,7 @@
 {% block content %}
 <div class="dashboard-layout">
 
+  <!-- ── Top app header ──────────────────────────────────────────── -->
   <header class="dash-header">
     <div class="header-left">
       <span class="logo-text">🏪 Spati Scheduler — Admin</span>
@@ -18,12 +19,27 @@
     </div>
   </header>
 
+  <!-- ── Branch tab bar ──────────────────────────────────────────── -->
+  <nav class="branch-tab-bar">
+    {% for branch in branches %}
+    <button
+      class="branch-tab{% if loop.first %} active{% endif %}"
+      data-branch-id="{{ branch.id }}"
+      data-branch-name="{{ branch.name }}"
+    >{{ branch.name }}</button>
+    {% else %}
+    <span class="branch-tab-empty">No branches — run seed.py first.</span>
+    {% endfor %}
+  </nav>
+
+  <!-- ── Main content ────────────────────────────────────────────── -->
   <main class="admin-main">
     <div class="admin-panels">
 
-      <!-- ── LEFT PANEL: Employee selector ─────────────── -->
+      <!-- ── LEFT: Employee selector ─────────────────────────────── -->
       <aside class="panel-left">
         <h3>Employees</h3>
+        <p class="panel-hint">Select to overlay availability</p>
         <input
           type="text"
           id="employee-search"
@@ -42,35 +58,32 @@
           <li class="employee-empty">No employees found.<br>Run seed.py first.</li>
           {% endfor %}
         </ul>
+
+        <!-- Colour legend -->
+        <div class="panel-legend">
+          <div class="legend-row"><span class="swatch swatch-avail"></span>Available</div>
+          <div class="legend-row"><span class="swatch swatch-unavail"></span>Unavailable / Conflict</div>
+          <div class="legend-row"><span class="swatch swatch-assigned"></span>Assigned here</div>
+          <div class="legend-row"><span class="swatch swatch-neutral"></span>No selection</div>
+        </div>
       </aside>
 
-      <!-- ── RIGHT PANEL: Calendar ──────────────────────── -->
+      <!-- ── RIGHT: Calendar ─────────────────────────────────────── -->
       <section class="panel-right">
 
-        <div class="panel-right-header">
-          <div class="branch-selector">
-            <label for="branch-select">Branch:</label>
-            <select id="branch-select" class="select-input">
-              {% for branch in branches %}
-              <option value="{{ branch.id }}">{{ branch.name }}</option>
-              {% else %}
-              <option value="">— no branches —</option>
-              {% endfor %}
-            </select>
-          </div>
+        <div class="panel-right-controls">
           <button id="export-btn" class="btn-export">📤 Export as Image</button>
         </div>
 
-        <!-- Placeholder shown when no employee is selected -->
-        <div id="no-employee-msg" class="no-employee-msg">
-          ← Select an employee to view and edit their schedule
-        </div>
+        <!-- Everything inside #export-target is captured by html2canvas -->
+        <div id="export-target">
 
-        <!-- Calendar — wrapped in export-target for html2canvas -->
-        <div id="export-target" style="display:none;">
-          <div class="export-header">
-            <span id="export-employee-name" class="export-name"></span>
-            <span class="export-week">Week: {{ week_start_display }}</span>
+          <!-- Branch name as the calendar's main header -->
+          <div class="cal-branch-header">
+            <span id="export-branch-name" class="cal-branch-title">
+              {% if branches %}{{ branches[0].name }}{% endif %}
+            </span>
+            <span class="cal-week-label">Week: {{ week_start_display }}</span>
           </div>
 
           <div class="calendar-wrapper">
@@ -95,13 +108,13 @@
                   </td>
                   {% for slot in slots %}
                   <td
-                    class="calendar-cell unavail admin-cell"
+                    class="calendar-cell admin-cell cell-neutral"
                     data-day="{{ day.index }}"
                     data-slot="{{ slot.key }}"
                     data-shift-assigned="false"
                     title="{{ day.name }} {{ day.date }} — {{ slot.label }}"
                   >
-                    <span class="shift-badge" style="display:none;"></span>
+                    <div class="cell-names"></div>
                   </td>
                   {% endfor %}
                 </tr>
@@ -110,11 +123,6 @@
             </table>
           </div><!-- .calendar-wrapper -->
 
-          <div class="legend">
-            <span class="legend-item legend-avail">Available</span>
-            <span class="legend-item legend-unavail">Unavailable</span>
-            <span class="legend-item legend-badge">● Assigned shift</span>
-          </div>
         </div><!-- #export-target -->
 
       </section><!-- .panel-right -->
@@ -122,7 +130,9 @@
     </div><!-- .admin-panels -->
   </main>
 
-</div>
+  <div id="toast" class="toast" style="display:none;"></div>
+
+</div><!-- .dashboard-layout -->
 {% endblock %}
 
 {% block scripts %}

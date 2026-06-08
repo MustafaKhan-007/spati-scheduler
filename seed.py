@@ -20,6 +20,7 @@ USERS = [
 
 BRANCHES = [
     {"name": "Spati Mitte", "location": "Berlin Mitte"},
+    {"name": "Frankfurt",   "location": "Frankfurt am Main"},
 ]
 
 

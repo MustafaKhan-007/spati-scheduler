@@ -1,8 +1,7 @@
 /**
  * calendar.js
- * Handles all interactive calendar logic for both the employee
- * and admin dashboards.  PAGE_TYPE and WEEK_START are injected
- * as global variables by each template's <script> block.
+ * Handles all interactive calendar logic for the employee and admin dashboards.
+ * PAGE_TYPE and WEEK_START are injected as globals by each template's <script> block.
  */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -15,11 +14,30 @@ document.addEventListener("DOMContentLoaded", function () {
    SHARED UTILITIES
    ============================================================ */
 
-/** Apply available / unavailable colour class to a cell. */
 function setCellAvailability(cell, available) {
   cell.classList.toggle("available", available);
   cell.classList.toggle("unavail",  !available);
   cell.dataset.available = available ? "true" : "false";
+}
+
+function showToast(message, type) {
+  var toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent   = message;
+  toast.className     = "toast toast-" + type;
+  toast.style.display = "block";
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(function () {
+    toast.style.display = "none";
+  }, 3800);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 /* ============================================================
@@ -27,17 +45,14 @@ function setCellAvailability(cell, available) {
    ============================================================ */
 
 function initEmployee() {
-  // Fetch saved availability and paint the grid
   loadMyAvailability();
 
-  // Toggle cells on click
   document.querySelectorAll(".toggleable").forEach(function (cell) {
     cell.addEventListener("click", function () {
       setCellAvailability(cell, cell.dataset.available !== "true");
     });
   });
 
-  // Save button
   var saveBtn = document.getElementById("save-btn");
   if (saveBtn) saveBtn.addEventListener("click", saveMyAvailability);
 }
@@ -51,9 +66,7 @@ function loadMyAvailability() {
         setCellAvailability(cell, data[key] === true);
       });
     })
-    .catch(function (err) {
-      console.error("Could not load availability:", err);
-    });
+    .catch(function (err) { console.error("Could not load availability:", err); });
 }
 
 function saveMyAvailability() {
@@ -79,32 +92,51 @@ function saveMyAvailability() {
         showToast("✗ Could not save. Try again.", "error");
       }
     })
-    .catch(function () {
-      showToast("✗ Network error.", "error");
-    });
-}
-
-function showToast(message, type) {
-  var toast = document.getElementById("toast");
-  if (!toast) return;
-  toast.textContent = message;
-  toast.className   = "toast toast-" + type;
-  toast.style.display = "block";
-  clearTimeout(toast._hideTimer);
-  toast._hideTimer = setTimeout(function () {
-    toast.style.display = "none";
-  }, 3200);
+    .catch(function () { showToast("✗ Network error.", "error"); });
 }
 
 /* ============================================================
    ADMIN PAGE
    ============================================================ */
 
+// Active branch context
+var activeBranchId   = null;
+var activeBranchName = "";
+
+// Active employee overlay context (null = no employee selected)
 var activeUserId   = null;
 var activeUserName = "";
 
+// branchSchedule[slot_key] = [{user_id, full_name}, ...]
+var branchSchedule = {};
+
+// employeeAvailability[slot_key] = true | false
+var employeeAvailability = {};
+
+// employeeShifts[slot_key] = {branch_id, branch_name, at_this_branch}
+var employeeShifts = {};
+
 function initAdmin() {
-  // ── Employee search filter ────────────────────────────────
+  // Activate the first branch tab on load
+  var firstTab = document.querySelector(".branch-tab");
+  if (firstTab) {
+    selectBranch(
+      parseInt(firstTab.dataset.branchId, 10),
+      firstTab.dataset.branchName
+    );
+  }
+
+  // Branch tab clicks
+  document.querySelectorAll(".branch-tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      selectBranch(
+        parseInt(tab.dataset.branchId, 10),
+        tab.dataset.branchName
+      );
+    });
+  });
+
+  // Employee search filter
   var searchInput = document.getElementById("employee-search");
   var allItems    = document.querySelectorAll(".employee-item");
 
@@ -117,129 +149,215 @@ function initAdmin() {
     });
   }
 
-  // ── Employee selection ────────────────────────────────────
+  // Employee selection — click to select, click again to deselect
   allItems.forEach(function (li) {
     li.addEventListener("click", function () {
+      var clickedId = parseInt(li.dataset.userId, 10);
+
+      if (activeUserId === clickedId) {
+        // Deselect
+        li.classList.remove("selected");
+        activeUserId        = null;
+        activeUserName      = "";
+        employeeAvailability = {};
+        employeeShifts       = {};
+        renderAllCells();
+        return;
+      }
+
       allItems.forEach(function (i) { i.classList.remove("selected"); });
       li.classList.add("selected");
-
-      activeUserId   = li.dataset.userId;
+      activeUserId   = clickedId;
       activeUserName = li.dataset.name;
 
-      var nameEl = document.getElementById("export-employee-name");
-      if (nameEl) nameEl.textContent = activeUserName;
-
-      loadAdminView(activeUserId);
+      loadEmployeeAvailability(activeUserId);
     });
   });
 
-  // ── Admin cell click (assign / remove shift) ──────────────
+  // Cell click — assign / remove the active employee
   document.querySelectorAll(".admin-cell").forEach(function (cell) {
-    cell.addEventListener("click", function () {
-      onAdminCellClick(cell);
-    });
+    cell.addEventListener("click", function () { onAdminCellClick(cell); });
   });
 
-  // ── Export button ─────────────────────────────────────────
+  // Export button
   var exportBtn = document.getElementById("export-btn");
   if (exportBtn) exportBtn.addEventListener("click", doExport);
 }
 
-/** Fetch and render one employee's availability + shifts. */
-function loadAdminView(userId) {
-  fetch("/admin/availability/" + userId)
+/* ── Branch selection ──────────────────────────────────────── */
+
+function selectBranch(branchId, branchName) {
+  activeBranchId   = branchId;
+  activeBranchName = branchName;
+
+  // Highlight active tab
+  document.querySelectorAll(".branch-tab").forEach(function (tab) {
+    tab.classList.toggle("active", parseInt(tab.dataset.branchId, 10) === branchId);
+  });
+
+  // Update the calendar header title
+  var titleEl = document.getElementById("export-branch-name");
+  if (titleEl) titleEl.textContent = branchName;
+
+  // Fetch both branch schedule and (if employee selected) employee availability in parallel
+  var scheduleReq = fetch("/admin/branch/" + branchId + "/schedule")
     .then(function (r) { return r.json(); })
-    .then(function (data) {
-      var noMsg  = document.getElementById("no-employee-msg");
-      var target = document.getElementById("export-target");
+    .then(function (data) { branchSchedule = data.schedule || {}; });
 
-      if (noMsg)  noMsg.style.display  = "none";
-      if (target) target.style.display = "block";
+  var availReq = activeUserId
+    ? fetch("/admin/availability/" + activeUserId + "?branch_id=" + branchId)
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          employeeAvailability = data.availability || {};
+          employeeShifts       = data.shifts || {};
+        })
+    : Promise.resolve();
 
-      document.querySelectorAll(".admin-cell").forEach(function (cell) {
-        var key   = cell.dataset.day + "_" + cell.dataset.slot;
-        var avail = data.availability[key] === true;
-
-        setCellAvailability(cell, avail);
-
-        var badge = cell.querySelector(".shift-badge");
-        if (data.shifts[key]) {
-          badge.textContent    = "● " + data.shifts[key].branch_name;
-          badge.style.display  = "inline-block";
-          cell.dataset.shiftAssigned = "true";
-        } else {
-          badge.textContent    = "";
-          badge.style.display  = "none";
-          cell.dataset.shiftAssigned = "false";
-        }
-      });
-    })
-    .catch(function (err) {
-      console.error("Could not load admin availability:", err);
-    });
+  Promise.all([scheduleReq, availReq])
+    .then(renderAllCells)
+    .catch(function (err) { console.error("Error loading branch data:", err); });
 }
 
-function onAdminCellClick(cell) {
-  if (!activeUserId) return;
+/* ── Employee availability load ────────────────────────────── */
 
-  var isAvailable = cell.classList.contains("available");
-  var isAssigned  = cell.dataset.shiftAssigned === "true";
+function loadEmployeeAvailability(userId) {
+  fetch("/admin/availability/" + userId + "?branch_id=" + activeBranchId)
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      employeeAvailability = data.availability || {};
+      employeeShifts       = data.shifts || {};
+      renderAllCells();
+    })
+    .catch(function (err) { console.error("Could not load availability:", err); });
+}
 
-  // Only act on green (available) cells or already-assigned cells
-  if (!isAvailable && !isAssigned) return;
+/* ── Cell rendering ────────────────────────────────────────── */
 
-  var branchSelect = document.getElementById("branch-select");
-  var branchId     = branchSelect ? parseInt(branchSelect.value, 10) : null;
+function renderAllCells() {
+  document.querySelectorAll(".admin-cell").forEach(renderCell);
+}
 
-  if (!branchId) {
-    alert("No branch selected or no branches exist. Run seed.py first.");
+function renderCell(cell) {
+  var key = cell.dataset.day + "_" + cell.dataset.slot;
+
+  // ── Names of employees assigned to this branch/slot ──────
+  var namesDiv = cell.querySelector(".cell-names");
+  if (namesDiv) {
+    var assigned = branchSchedule[key] || [];
+    namesDiv.innerHTML = assigned.map(function (e) {
+      return '<span class="cell-name">' + escapeHtml(e.full_name) + "</span>";
+    }).join("");
+  }
+
+  // ── Background colour based on active employee's state ───
+  cell.classList.remove("available", "unavail", "cell-assigned-here", "cell-neutral");
+
+  if (!activeUserId) {
+    cell.classList.add("cell-neutral");
+    cell.dataset.shiftAssigned = "false";
     return;
   }
+
+  var shift = employeeShifts[key];
+
+  if (shift) {
+    if (shift.at_this_branch) {
+      // Employee is assigned HERE for this slot
+      cell.classList.add("cell-assigned-here");
+      cell.dataset.shiftAssigned = "true";
+    } else {
+      // Employee is assigned elsewhere — show as conflict (red)
+      cell.classList.add("unavail");
+      cell.dataset.shiftAssigned = "false";
+    }
+  } else {
+    // No shift — colour by own availability
+    var avail = employeeAvailability[key] === true;
+    cell.classList.add(avail ? "available" : "unavail");
+    cell.dataset.shiftAssigned = "false";
+  }
+}
+
+/* ── Cell click (assign / remove) ─────────────────────────── */
+
+function onAdminCellClick(cell) {
+  if (!activeUserId || !activeBranchId) return;
+
+  var isAssignedHere = cell.dataset.shiftAssigned === "true";
+  var isAvailable    = cell.classList.contains("available");
+
+  // Only act on green (available) or the cell already assigned to this employee
+  if (!isAvailable && !isAssignedHere) return;
+
+  var day  = parseInt(cell.dataset.day, 10);
+  var slot = cell.dataset.slot;
+  var key  = day + "_" + slot;
 
   fetch("/admin/assign", {
     method:  "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      user_id:     parseInt(activeUserId, 10),
-      day_of_week: parseInt(cell.dataset.day, 10),
-      slot:        cell.dataset.slot,
-      branch_id:   branchId,
+      user_id:     activeUserId,
+      day_of_week: day,
+      slot:        slot,
+      branch_id:   activeBranchId,
       week_start:  WEEK_START,
     }),
   })
     .then(function (r) { return r.json(); })
     .then(function (data) {
-      var badge = cell.querySelector(".shift-badge");
       if (data.status === "assigned") {
-        badge.textContent    = "● " + data.branch_name;
-        badge.style.display  = "inline-block";
-        cell.dataset.shiftAssigned = "true";
+        // Add to local branch schedule
+        if (!branchSchedule[key]) branchSchedule[key] = [];
+        var already = branchSchedule[key].find(function (e) { return e.user_id === activeUserId; });
+        if (!already) {
+          branchSchedule[key].push({ user_id: activeUserId, full_name: activeUserName });
+        }
+        employeeShifts[key] = {
+          branch_id:      activeBranchId,
+          branch_name:    activeBranchName,
+          at_this_branch: true,
+        };
+
       } else if (data.status === "removed") {
-        badge.textContent    = "";
-        badge.style.display  = "none";
-        cell.dataset.shiftAssigned = "false";
+        // Remove from local branch schedule
+        if (branchSchedule[key]) {
+          branchSchedule[key] = branchSchedule[key].filter(function (e) {
+            return e.user_id !== activeUserId;
+          });
+        }
+        delete employeeShifts[key];
+
+      } else if (data.error === "conflict") {
+        showToast(
+          "✗ " + activeUserName + " is already assigned to "" + data.branch_name + "" for this slot.",
+          "error"
+        );
       }
+
+      renderAllCells();
     })
-    .catch(function (err) {
-      console.error("Shift assignment failed:", err);
-    });
+    .catch(function (err) { console.error("Shift assignment failed:", err); });
 }
 
-/** Capture the calendar grid as a PNG and trigger download. */
+/* ── Export ────────────────────────────────────────────────── */
+
 function doExport() {
-  if (!activeUserId) {
-    alert("Please select an employee first.");
+  if (!activeBranchId) {
+    alert("No branch selected.");
     return;
   }
 
   var target = document.getElementById("export-target");
   if (!target) return;
 
-  // html2canvas is loaded from CDN in the admin template
   if (typeof html2canvas === "undefined") {
     alert("Export library not loaded. Check your internet connection.");
     return;
   }
+
+  // Snapshot the calendar in export (light) mode temporarily
+  target.classList.add("exporting");
 
   html2canvas(target, {
     backgroundColor: "#ffffff",
@@ -247,14 +365,17 @@ function doExport() {
     useCORS:         true,
     logging:         false,
   }).then(function (canvas) {
-    var safeName = activeUserName.replace(/\s+/g, "_");
-    var filename = "schedule_" + WEEK_START + "_" + safeName + ".png";
+    target.classList.remove("exporting");
+
+    var safeBranch = activeBranchName.replace(/\s+/g, "_");
+    var filename   = "schedule_" + WEEK_START + "_" + safeBranch + ".png";
 
     var link      = document.createElement("a");
     link.download = filename;
     link.href     = canvas.toDataURL("image/png");
     link.click();
   }).catch(function (err) {
+    target.classList.remove("exporting");
     console.error("Export error:", err);
     alert("Export failed. Please try again.");
   });

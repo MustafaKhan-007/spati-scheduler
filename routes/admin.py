@@ -39,13 +39,13 @@ def dashboard():
     week_start = get_week_start()
 
     employees = User.query.filter_by(role="employee").order_by(User.full_name).all()
-    branches = Branch.query.order_by(Branch.name).all()
+    branches  = Branch.query.order_by(Branch.name).all()
 
     days = [
         {
             "index": i,
-            "name": DAY_NAMES[i],
-            "date": (week_start + timedelta(days=i)).strftime("%d.%m"),
+            "name":  DAY_NAMES[i],
+            "date":  (week_start + timedelta(days=i)).strftime("%d.%m"),
         }
         for i in range(7)
     ]
@@ -61,11 +61,40 @@ def dashboard():
     )
 
 
+# ── Branch schedule (all assigned names for a branch/week) ──────────────────
+
+@admin_bp.route("/branch/<int:branch_id>/schedule", methods=["GET"])
+@login_required
+@admin_required
+def get_branch_schedule(branch_id):
+    week_start = get_week_start()
+
+    shift_rows = (
+        Shift.query
+        .filter_by(branch_id=branch_id, week_start=week_start)
+        .all()
+    )
+
+    schedule = {}
+    for s in shift_rows:
+        key = f"{s.day_of_week}_{s.slot}"
+        schedule.setdefault(key, [])
+        schedule[key].append({
+            "user_id":   s.user_id,
+            "full_name": s.user.full_name if s.user else "",
+        })
+
+    return jsonify({"schedule": schedule})
+
+
+# ── Employee availability (with cross-branch context) ───────────────────────
+
 @admin_bp.route("/availability/<int:user_id>", methods=["GET"])
 @login_required
 @admin_required
 def get_availability(user_id):
     week_start = get_week_start()
+    branch_id  = request.args.get("branch_id", type=int)
 
     avail_rows = Availability.query.filter_by(
         user_id=user_id,
@@ -78,16 +107,21 @@ def get_availability(user_id):
     ).all()
 
     availability = {f"{r.day_of_week}_{r.slot}": r.is_available for r in avail_rows}
+
     shifts = {
         f"{s.day_of_week}_{s.slot}": {
-            "id": s.id,
-            "branch_name": s.branch.name if s.branch else "",
+            "id":             s.id,
+            "branch_id":      s.branch_id,
+            "branch_name":    s.branch.name if s.branch else "",
+            "at_this_branch": (s.branch_id == branch_id) if branch_id else False,
         }
         for s in shift_rows
     }
 
     return jsonify({"availability": availability, "shifts": shifts})
 
+
+# ── Assign / remove a shift ──────────────────────────────────────────────────
 
 @admin_bp.route("/assign", methods=["POST"])
 @login_required
@@ -97,13 +131,12 @@ def assign_shift():
     if not data:
         return jsonify({"error": "No data"}), 400
 
-    user_id = data.get("user_id")
-    day_of_week = data.get("day_of_week")
-    slot = data.get("slot")
-    branch_id = data.get("branch_id")
+    user_id        = data.get("user_id")
+    day_of_week    = data.get("day_of_week")
+    slot           = data.get("slot")
+    branch_id      = data.get("branch_id")
     week_start_str = data.get("week_start")
 
-    # Explicit None checks so day_of_week=0 (Monday) is accepted
     if user_id is None or day_of_week is None or not slot or branch_id is None or not week_start_str:
         return jsonify({"error": "Missing required fields"}), 400
 
@@ -112,17 +145,26 @@ def assign_shift():
     except ValueError:
         return jsonify({"error": "Invalid week_start format"}), 400
 
-    existing = Shift.query.filter_by(
+    # Check for any existing shift for this employee in this slot (any branch)
+    any_existing = Shift.query.filter_by(
         user_id=user_id,
         week_start=week_start,
         day_of_week=day_of_week,
         slot=slot,
     ).first()
 
-    if existing:
-        db.session.delete(existing)
-        db.session.commit()
-        return jsonify({"status": "removed"})
+    if any_existing:
+        if any_existing.branch_id == branch_id:
+            # Same branch — toggle off
+            db.session.delete(any_existing)
+            db.session.commit()
+            return jsonify({"status": "removed"})
+        else:
+            # Already assigned at a different branch — block
+            return jsonify({
+                "error":       "conflict",
+                "branch_name": any_existing.branch.name if any_existing.branch else "another branch",
+            }), 409
 
     branch = db.session.get(Branch, branch_id)
     if not branch:
