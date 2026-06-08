@@ -1,5 +1,8 @@
 from functools import wraps
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo("Europe/Berlin")
 
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
@@ -23,8 +26,11 @@ def employee_required(f):
     return decorated
 
 
+_SLOTS = ["morning", "evening", "night"]
+
+
 def get_week_start() -> date:
-    today = date.today()
+    today = datetime.now(_BERLIN).date()
     return today - timedelta(days=today.weekday())
 
 
@@ -72,7 +78,11 @@ def get_availability():
         week_start=week_start,
     ).all()
 
-    data = {f"{r.day_of_week}_{r.slot}": r.is_available for r in rows}
+    # Pre-fill every slot as available (True) — only override with explicit records
+    data = {f"{day}_{slot}": True for day in range(7) for slot in _SLOTS}
+    for r in rows:
+        data[f"{r.day_of_week}_{r.slot}"] = r.is_available
+
     return jsonify(data)
 
 

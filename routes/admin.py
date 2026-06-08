@@ -1,5 +1,9 @@
 from functools import wraps
 from datetime import date, timedelta, datetime
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo("Europe/Berlin")
+_SLOTS  = ["morning", "evening", "night"]
 
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
@@ -22,7 +26,7 @@ def admin_required(f):
 
 
 def get_week_start() -> date:
-    today = date.today()
+    today = datetime.now(_BERLIN).date()
     return today - timedelta(days=today.weekday())
 
 
@@ -35,6 +39,15 @@ def dashboard():
 
     employees = User.query.filter_by(role="employee").order_by(User.full_name).all()
     branches  = Branch.query.order_by(Branch.name).all()
+
+    # IDs of employees who have explicitly saved availability this week
+    avail_set_ids = {
+        row.user_id
+        for row in db.session.query(Availability.user_id)
+        .filter_by(week_start=week_start)
+        .distinct()
+        .all()
+    }
 
     day_names = t["days"]
     slots = [
@@ -55,6 +68,7 @@ def dashboard():
     return render_template(
         "admin_dashboard.html",
         employees=employees,
+        avail_set_ids=avail_set_ids,
         branches=branches,
         week_start=week_start.strftime("%Y-%m-%d"),
         week_start_display=week_start.strftime("%d.%m.%Y"),
@@ -109,7 +123,10 @@ def get_availability(user_id):
         week_start=week_start,
     ).all()
 
-    availability = {f"{r.day_of_week}_{r.slot}": r.is_available for r in avail_rows}
+    # Pre-fill every slot as available (True) — only override with explicit records
+    availability = {f"{day}_{slot}": True for day in range(7) for slot in _SLOTS}
+    for r in avail_rows:
+        availability[f"{r.day_of_week}_{r.slot}"] = r.is_available
 
     shifts = {
         f"{s.day_of_week}_{s.slot}": {

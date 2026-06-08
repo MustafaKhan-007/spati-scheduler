@@ -637,6 +637,27 @@ small { font-size: 0.78em; }
 .employee-item:hover    { background: rgba(255,255,255,0.06); color: var(--text-light); }
 .employee-item.selected { background: var(--accent); color: #fff; }
 
+.emp-name {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.avail-status {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  margin-top: 2px;
+  letter-spacing: 0.2px;
+}
+
+.avail-set     { color: #4ade80; }   /* green  — availability saved */
+.avail-not-set { color: #f87171; }   /* red    — not yet saved */
+
+/* keep status text readable when the row is selected (accent bg) */
+.employee-item.selected .avail-set     { color: #bbf7d0; }
+.employee-item.selected .avail-not-set { color: #fecaca; }
+
 .employee-empty {
   font-size: 0.82rem;
   color: var(--text-muted);

@@ -53,10 +53,10 @@
             </td>
             {% for slot in slots %}
             <td
-              class="calendar-cell unavail toggleable"
+              class="calendar-cell available toggleable"
               data-day="{{ day.index }}"
               data-slot="{{ slot.key }}"
-              data-available="false"
+              data-available="true"
               title="{{ day.name }} {{ day.date }} — {{ slot.label }}"
             ></td>
             {% endfor %}

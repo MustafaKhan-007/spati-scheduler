@@ -44,6 +44,9 @@ TRANSLATIONS = {
         "no_branches":     "No branches — run seed.py first.",
 
         # Legend
+        "avail_set":         "Availability set",
+        "avail_not_set":     "Availability not set",
+
         "legend_available":  "Available",
         "legend_unavail":    "Unavailable",
         "legend_assigned":   "Assigned here",
@@ -100,6 +103,9 @@ TRANSLATIONS = {
         "no_employees":    "Keine Mitarbeiter gefunden.\nBitte seed.py ausführen.",
         "no_branches":     "Keine Filialen — bitte seed.py ausführen.",
 
+        "avail_set":         "Verfügbarkeit gesetzt",
+        "avail_not_set":     "Verfügbarkeit nicht gesetzt",
+
         "legend_available":  "Verfügbar",
         "legend_unavail":    "Nicht verfügbar",
         "legend_assigned":   "Hier eingeplant",
@@ -151,6 +157,9 @@ TRANSLATIONS = {
         "export_image":    "Görüntü Olarak Dışa Aktar",
         "no_employees":    "Çalışan bulunamadı.\nLütfen seed.py çalıştırın.",
         "no_branches":     "Şube yok — lütfen seed.py çalıştırın.",
+
+        "avail_set":         "Müsaitlik belirlendi",
+        "avail_not_set":     "Müsaitlik belirlenmedi",
 
         "legend_available":  "Müsait",
         "legend_unavail":    "Müsait Değil",

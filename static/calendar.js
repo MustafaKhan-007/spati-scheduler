@@ -97,7 +97,7 @@ function loadMyAvailability() {
     .then(function (data) {
       document.querySelectorAll(".toggleable").forEach(function (cell) {
         var key = cell.dataset.day + "_" + cell.dataset.slot;
-        setCellAvailability(cell, data[key] === true);
+        setCellAvailability(cell, data[key] !== false);
       });
     })
     .catch(function (err) { console.error("Could not load availability:", err); });
@@ -310,7 +310,7 @@ function renderCell(cell) {
     }
   } else {
     // No shift — colour by own availability
-    var avail = employeeAvailability[key] === true;
+    var avail = employeeAvailability[key] !== false;
     cell.classList.add(avail ? "available" : "unavail");
     cell.dataset.shiftAssigned = "false";
   }

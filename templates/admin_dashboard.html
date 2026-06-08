@@ -64,7 +64,14 @@
             class="employee-item"
             data-user-id="{{ emp.id }}"
             data-name="{{ emp.full_name }}"
-          >{{ emp.full_name }}</li>
+          >
+            <span class="emp-name">{{ emp.full_name }}</span>
+            {% if emp.id in avail_set_ids %}
+            <span class="avail-status avail-set">{{ t.avail_set }}</span>
+            {% else %}
+            <span class="avail-status avail-not-set">{{ t.avail_not_set }}</span>
+            {% endif %}
+          </li>
           {% else %}
           <li class="employee-empty">{{ t.no_employees }}</li>
           {% endfor %}
