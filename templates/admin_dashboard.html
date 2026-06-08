@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard — Spati Scheduler{% endblock %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+
+  <header class="dash-header">
+    <div class="header-left">
+      <span class="logo-text">🏪 Spati Scheduler — Admin</span>
+    </div>
+    <div class="header-right">
+      <span class="week-badge">Week of {{ week_start_display }}</span>
+      <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-panels">
+
+      <!-- ── LEFT PANEL: Employee selector ─────────────── -->
+      <aside class="panel-left">
+        <h3>Employees</h3>
+        <input
+          type="text"
+          id="employee-search"
+          class="search-input"
+          placeholder="🔍 Search employees…"
+          autocomplete="off"
+        />
+        <ul id="employee-list" class="employee-list">
+          {% for emp in employees %}
+          <li
+            class="employee-item"
+            data-user-id="{{ emp.id }}"
+            data-name="{{ emp.full_name }}"
+          >{{ emp.full_name }}</li>
+          {% else %}
+          <li class="employee-empty">No employees found.<br>Run seed.py first.</li>
+          {% endfor %}
+        </ul>
+      </aside>
+
+      <!-- ── RIGHT PANEL: Calendar ──────────────────────── -->
+      <section class="panel-right">
+
+        <div class="panel-right-header">
+          <div class="branch-selector">
+            <label for="branch-select">Branch:</label>
+            <select id="branch-select" class="select-input">
+              {% for branch in branches %}
+              <option value="{{ branch.id }}">{{ branch.name }}</option>
+              {% else %}
+              <option value="">— no branches —</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button id="export-btn" class="btn-export">📤 Export as Image</button>
+        </div>
+
+        <!-- Placeholder shown when no employee is selected -->
+        <div id="no-employee-msg" class="no-employee-msg">
+          ← Select an employee to view and edit their schedule
+        </div>
+
+        <!-- Calendar — wrapped in export-target for html2canvas -->
+        <div id="export-target" style="display:none;">
+          <div class="export-header">
+            <span id="export-employee-name" class="export-name"></span>
+            <span class="export-week">Week: {{ week_start_display }}</span>
+          </div>
+
+          <div class="calendar-wrapper">
+            <table class="calendar-table" id="admin-calendar">
+              <thead>
+                <tr>
+                  <th class="th-day"></th>
+                  {% for slot in slots %}
+                  <th>
+                    {{ slot.label }}<br />
+                    <small>{{ slot.time }}</small>
+                  </th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for day in days %}
+                <tr>
+                  <td class="day-label">
+                    {{ day.name }}<br />
+                    <small>{{ day.date }}</small>
+                  </td>
+                  {% for slot in slots %}
+                  <td
+                    class="calendar-cell unavail admin-cell"
+                    data-day="{{ day.index }}"
+                    data-slot="{{ slot.key }}"
+                    data-shift-assigned="false"
+                    title="{{ day.name }} {{ day.date }} — {{ slot.label }}"
+                  >
+                    <span class="shift-badge" style="display:none;"></span>
+                  </td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div><!-- .calendar-wrapper -->
+
+          <div class="legend">
+            <span class="legend-item legend-avail">Available</span>
+            <span class="legend-item legend-unavail">Unavailable</span>
+            <span class="legend-item legend-badge">● Assigned shift</span>
+          </div>
+        </div><!-- #export-target -->
+
+      </section><!-- .panel-right -->
+
+    </div><!-- .admin-panels -->
+  </main>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const WEEK_START = "{{ week_start }}";
+  const PAGE_TYPE  = "admin";
+</script>
+<script src="{{ url_for('static', filename='calendar.js') }}"></script>
+{% endblock %}

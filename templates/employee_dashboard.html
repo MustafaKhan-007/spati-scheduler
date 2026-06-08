@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}My Availability — Spati Scheduler{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+
+  <header class="dash-header">
+    <div class="header-left">
+      <span class="logo-text">🏪 Spati Scheduler</span>
+    </div>
+    <div class="header-right">
+      <span class="greeting">Hey, {{ current_user.full_name }} 👋</span>
+      <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
+    </div>
+  </header>
+
+  <main class="dash-main">
+    <h2>Set Your Availability</h2>
+    <p class="week-label">
+      Week: <strong>{{ week_start_display }}</strong> – <strong>{{ week_end_display }}</strong>
+    </p>
+
+    <div class="calendar-wrapper">
+      <table class="calendar-table" id="availability-grid">
+        <thead>
+          <tr>
+            <th class="th-day"></th>
+            {% for slot in slots %}
+            <th>
+              {{ slot.label }}<br />
+              <small>{{ slot.time }}</small>
+            </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for day in days %}
+          <tr>
+            <td class="day-label">
+              {{ day.name }}<br />
+              <small>{{ day.date }}</small>
+            </td>
+            {% for slot in slots %}
+            <td
+              class="calendar-cell unavail toggleable"
+              data-day="{{ day.index }}"
+              data-slot="{{ slot.key }}"
+              data-available="false"
+              title="{{ day.name }} {{ day.date }} — {{ slot.label }}"
+            ></td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="action-row">
+      <button id="save-btn" class="btn-primary">💾 Save Availability</button>
+    </div>
+
+    <div id="toast" class="toast" style="display:none;"></div>
+  </main>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const WEEK_START = "{{ week_start }}";
+  const PAGE_TYPE  = "employee";
+</script>
+<script src="{{ url_for('static', filename='calendar.js') }}"></script>
+{% endblock %}
