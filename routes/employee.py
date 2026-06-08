@@ -58,7 +58,7 @@ def dashboard():
         week_start_display=week_start.strftime("%d.%m.%Y"),
         week_end_display=week_end.strftime("%d.%m.%Y"),
         days=days,
-        slots=SLOTS,
+        slots=slots,
     )
 
 
