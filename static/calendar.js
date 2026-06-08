@@ -288,7 +288,7 @@ function renderCell(cell) {
   }
 
   // ── Background colour based on active employee's state ───
-  cell.classList.remove("available", "unavail", "cell-assigned-here", "cell-neutral");
+  cell.classList.remove("available", "unavail", "cell-assigned-here", "cell-neutral", "cell-assigned-elsewhere");
 
   if (!activeUserId) {
     cell.classList.add("cell-neutral");
@@ -300,12 +300,12 @@ function renderCell(cell) {
 
   if (shift) {
     if (shift.at_this_branch) {
-      // Employee is assigned HERE for this slot
+      // Employee is assigned HERE for this slot — blue
       cell.classList.add("cell-assigned-here");
       cell.dataset.shiftAssigned = "true";
     } else {
-      // Employee is assigned elsewhere — show as conflict (red)
-      cell.classList.add("unavail");
+      // Employee already assigned at a different branch — grey (not an error, just busy)
+      cell.classList.add("cell-assigned-elsewhere");
       cell.dataset.shiftAssigned = "false";
     }
   } else {
@@ -401,22 +401,24 @@ function doExport() {
   var cells    = Array.from(document.querySelectorAll(".admin-cell"));
   var snapshot = cells.map(function (cell) {
     return {
-      available:    cell.classList.contains("available"),
-      unavail:      cell.classList.contains("unavail"),
-      assignedHere: cell.classList.contains("cell-assigned-here"),
+      available:         cell.classList.contains("available"),
+      unavail:           cell.classList.contains("unavail"),
+      assignedHere:      cell.classList.contains("cell-assigned-here"),
+      assignedElsewhere: cell.classList.contains("cell-assigned-elsewhere"),
     };
   });
   cells.forEach(function (cell) {
-    cell.classList.remove("available", "unavail", "cell-assigned-here");
+    cell.classList.remove("available", "unavail", "cell-assigned-here", "cell-assigned-elsewhere");
     cell.classList.add("cell-neutral");
   });
 
   function restoreCells() {
     cells.forEach(function (cell, i) {
       cell.classList.remove("cell-neutral");
-      if (snapshot[i].available)    cell.classList.add("available");
-      if (snapshot[i].unavail)      cell.classList.add("unavail");
-      if (snapshot[i].assignedHere) cell.classList.add("cell-assigned-here");
+      if (snapshot[i].available)         cell.classList.add("available");
+      if (snapshot[i].unavail)           cell.classList.add("unavail");
+      if (snapshot[i].assignedHere)      cell.classList.add("cell-assigned-here");
+      if (snapshot[i].assignedElsewhere) cell.classList.add("cell-assigned-elsewhere");
     });
   }
 

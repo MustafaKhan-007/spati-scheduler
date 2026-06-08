@@ -10,7 +10,8 @@
   --text-muted: #9090b0;
   --available:  #2d6a4f;
   --unavail:    #9b2226;
-  --assigned:   #1e3a6e;   /* blue — assigned to this branch */
+  --assigned:           #1e3a6e;   /* blue  — assigned to this branch */
+  --assigned-elsewhere: #3d3d58;   /* grey  — assigned at another branch */
   --border:     #2a2a4a;
   --radius:     8px;
 }
@@ -670,7 +671,8 @@ small { font-size: 0.78em; }
 
 .swatch-avail    { background: var(--available); }
 .swatch-unavail  { background: var(--unavail); }
-.swatch-assigned { background: var(--assigned); border: 1px solid #3b6cb0; }
+.swatch-assigned    { background: var(--assigned); border: 1px solid #3b6cb0; }
+.swatch-elsewhere   { background: var(--assigned-elsewhere); border: 1px solid #5a5a7a; }
 .swatch-neutral  { background: #2a2a4a; border: 1px solid #3a3a5a; }
 
 /* ── RIGHT PANEL ───────────────────────────────────────────── */
@@ -749,8 +751,9 @@ small { font-size: 0.78em; }
 .admin-cell.cell-assigned-here:hover { filter: brightness(1.22); }
 
 /* ── Cell colour states ────────────────────────────────────── */
-.calendar-cell.cell-neutral      { background-color: #22224a; }
-.calendar-cell.cell-assigned-here { background-color: var(--assigned); }
+.calendar-cell.cell-neutral           { background-color: #22224a; }
+.calendar-cell.cell-assigned-here     { background-color: var(--assigned); }
+.calendar-cell.cell-assigned-elsewhere { background-color: var(--assigned-elsewhere); cursor: default; }
 
 /* ── Names inside cells ────────────────────────────────────── */
 .cell-names {

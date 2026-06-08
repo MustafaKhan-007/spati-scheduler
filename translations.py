@@ -44,10 +44,11 @@ TRANSLATIONS = {
         "no_branches":     "No branches — run seed.py first.",
 
         # Legend
-        "legend_available": "Available",
-        "legend_unavail":   "Unavailable / Conflict",
-        "legend_assigned":  "Assigned here",
-        "legend_neutral":   "No selection",
+        "legend_available":  "Available",
+        "legend_unavail":    "Unavailable",
+        "legend_assigned":   "Assigned here",
+        "legend_elsewhere":  "Assigned elsewhere",
+        "legend_neutral":    "No selection",
 
         # Day abbreviations (Mon–Sun)
         "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -99,10 +100,11 @@ TRANSLATIONS = {
         "no_employees":    "Keine Mitarbeiter gefunden.\nBitte seed.py ausführen.",
         "no_branches":     "Keine Filialen — bitte seed.py ausführen.",
 
-        "legend_available": "Verfügbar",
-        "legend_unavail":   "Nicht verfügbar / Überschneidung",
-        "legend_assigned":  "Hier eingeplant",
-        "legend_neutral":   "Keine Auswahl",
+        "legend_available":  "Verfügbar",
+        "legend_unavail":    "Nicht verfügbar",
+        "legend_assigned":   "Hier eingeplant",
+        "legend_elsewhere":  "Anderswo eingeplant",
+        "legend_neutral":    "Keine Auswahl",
 
         "days": ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
 
@@ -150,10 +152,11 @@ TRANSLATIONS = {
         "no_employees":    "Çalışan bulunamadı.\nLütfen seed.py çalıştırın.",
         "no_branches":     "Şube yok — lütfen seed.py çalıştırın.",
 
-        "legend_available": "Müsait",
-        "legend_unavail":   "Müsait Değil / Çakışma",
-        "legend_assigned":  "Buraya atandı",
-        "legend_neutral":   "Seçim yok",
+        "legend_available":  "Müsait",
+        "legend_unavail":    "Müsait Değil",
+        "legend_assigned":   "Buraya atandı",
+        "legend_elsewhere":  "Başka şubede atandı",
+        "legend_neutral":    "Seçim yok",
 
         "days": ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
 
