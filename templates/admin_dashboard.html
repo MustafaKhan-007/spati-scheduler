@@ -14,7 +14,7 @@
       <span class="logo-text">🏪 Spati Scheduler — {{ t.admin_label }}</span>
     </div>
     <div class="header-right">
-      <span class="week-badge">{{ t.week_of }} {{ week_start_display }}</span>
+      <span class="week-badge">{{ t.week_of }} {{ week_start_display }} – {{ week_end_display }}</span>
 
       <!-- Language switcher -->
       <div class="lang-switcher">
@@ -102,7 +102,7 @@
             <span id="export-branch-name" class="cal-branch-title">
               {% if branches %}{{ branches[0].name }}{% endif %}
             </span>
-            <span class="cal-week-label">{{ t.week }}: {{ week_start_display }}</span>
+            <span class="cal-week-label">{{ t.week }}: {{ week_start_display }} – {{ week_end_display }}</span>
           </div>
 
           <div class="calendar-wrapper">

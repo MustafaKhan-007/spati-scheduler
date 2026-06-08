@@ -71,7 +71,8 @@ def dashboard():
         avail_set_ids=avail_set_ids,
         branches=branches,
         week_start=week_start.strftime("%Y-%m-%d"),
-        week_start_display=week_start.strftime("%d.%m.%Y"),
+        week_start_display=week_start.strftime("%d.%m"),
+        week_end_display=(week_start + timedelta(days=6)).strftime("%d.%m.%Y"),
         days=days,
         slots=slots,
     )
