@@ -313,7 +313,7 @@ small { font-size: 0.78em; }
 
 .calendar-cell {
   min-width: 80px;
-  height: 70px;
+  height: 78px;
   text-align: center;
   vertical-align: middle;
   position: relative;
@@ -707,19 +707,20 @@ small { font-size: 0.78em; }
 
 .cell-name {
   display: block;
-  font-size: 0.78rem;     /* slightly larger than before */
+  font-size: 0.86rem;
   font-weight: 700;
   color: #fff;
-  background: rgba(0, 0, 0, 0.32);
-  padding: 3px 8px 3px;
-  border-radius: 0 0 4px 4px;  /* flat top (stripe sits there), rounded bottom */
+  background: rgba(0, 0, 0, 0.38);
+  padding: 4px 10px 4px;
+  border-radius: 0 0 5px 5px;
   border-top: 3px solid #6366f1; /* overridden by inline style per employee */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 96%;
-  letter-spacing: 0.2px;
+  max-width: 98%;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Export-target: dark overrides for table internals ────── */
@@ -793,6 +794,6 @@ small { font-size: 0.78em; }
     font-size: 0.72rem;
   }
 
-  .cell-name      { font-size: 0.62rem; }
+  .cell-name      { font-size: 0.72rem; padding: 3px 6px; }
   .branch-tab     { padding: 7px 14px; font-size: 0.82rem; min-width: 90px; }
 }
