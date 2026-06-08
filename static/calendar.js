@@ -330,7 +330,7 @@ function onAdminCellClick(cell) {
 
       } else if (data.error === "conflict") {
         showToast(
-          "✗ " + activeUserName + " is already assigned to "" + data.branch_name + "" for this slot.",
+          "✗ " + activeUserName + " is already assigned to \"" + data.branch_name + "\" for this slot.",
           "error"
         );
       }
