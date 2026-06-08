@@ -80,8 +80,9 @@ def get_branch_schedule(branch_id):
         key = f"{s.day_of_week}_{s.slot}"
         schedule.setdefault(key, [])
         schedule[key].append({
-            "user_id":   s.user_id,
-            "full_name": s.user.full_name if s.user else "",
+            "user_id":      s.user_id,
+            "full_name":    s.user.full_name    if s.user else "",
+            "accent_color": s.user.accent_color if s.user and s.user.accent_color else "",
         })
 
     return jsonify({"schedule": schedule})

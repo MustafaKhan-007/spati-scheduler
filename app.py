@@ -46,9 +46,21 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        _ensure_schema()
         _ensure_branches()
 
     return app
+
+
+def _ensure_schema():
+    """Add any columns introduced after the initial schema (idempotent)."""
+    from sqlalchemy import inspect, text
+    inspector = inspect(db.engine)
+    user_cols = [c["name"] for c in inspector.get_columns("users")]
+    if "accent_color" not in user_cols:
+        with db.engine.connect() as conn:
+            conn.execute(text("ALTER TABLE users ADD COLUMN accent_color VARCHAR(20)"))
+            conn.commit()
 
 
 def _ensure_branches():

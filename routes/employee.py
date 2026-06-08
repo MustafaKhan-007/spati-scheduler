@@ -4,6 +4,8 @@ from datetime import date, timedelta
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 
+import re
+
 from models import db, Availability
 
 employee_bp = Blueprint("employee", __name__, url_prefix="/employee")
@@ -100,3 +102,32 @@ def save_availability():
 
     db.session.commit()
     return jsonify({"status": "ok"})
+
+
+# ── Accent colour ────────────────────────────────────────────────────────────
+
+_HEX_RE = re.compile(r'^#[0-9a-fA-F]{6}$')
+
+# Colours to reject: too close to the system's green / red / white / black
+_BLOCKED = {"#000000", "#ffffff", "#2d6a4f", "#9b2226",
+            "#00ff00", "#008000", "#ff0000", "#dc2626"}
+
+
+@employee_bp.route("/accent-color", methods=["GET", "POST"])
+@login_required
+@employee_required
+def handle_accent_color():
+    if request.method == "GET":
+        return jsonify({"accent_color": current_user.accent_color or ""})
+
+    data  = request.get_json() or {}
+    color = data.get("color", "").strip().lower()
+
+    if not _HEX_RE.match(color):
+        return jsonify({"error": "Invalid colour format"}), 400
+    if color in _BLOCKED:
+        return jsonify({"error": "Colour not allowed"}), 400
+
+    current_user.accent_color = color
+    db.session.commit()
+    return jsonify({"status": "ok", "accent_color": color})

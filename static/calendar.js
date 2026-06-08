@@ -46,6 +46,7 @@ function escapeHtml(str) {
 
 function initEmployee() {
   loadMyAvailability();
+  loadAccentColor();
 
   document.querySelectorAll(".toggleable").forEach(function (cell) {
     cell.addEventListener("click", function () {
@@ -53,8 +54,41 @@ function initEmployee() {
     });
   });
 
+  document.querySelectorAll(".color-swatch").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      saveAccentColor(btn.dataset.color);
+    });
+  });
+
   var saveBtn = document.getElementById("save-btn");
   if (saveBtn) saveBtn.addEventListener("click", saveMyAvailability);
+}
+
+function loadAccentColor() {
+  fetch("/employee/accent-color")
+    .then(function (r) { return r.json(); })
+    .then(function (data) { highlightSwatch(data.accent_color || ""); })
+    .catch(function () {});
+}
+
+function saveAccentColor(color) {
+  highlightSwatch(color);
+  fetch("/employee/accent-color", {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify({ color: color }),
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.status === "ok") showToast("✓ Accent colour saved!", "success");
+    })
+    .catch(function () { showToast("✗ Could not save colour.", "error"); });
+}
+
+function highlightSwatch(color) {
+  document.querySelectorAll(".color-swatch").forEach(function (btn) {
+    btn.classList.toggle("selected", btn.dataset.color === color);
+  });
 }
 
 function loadMyAvailability() {
@@ -245,7 +279,11 @@ function renderCell(cell) {
   if (namesDiv) {
     var assigned = branchSchedule[key] || [];
     namesDiv.innerHTML = assigned.map(function (e) {
-      return '<span class="cell-name">' + escapeHtml(e.full_name) + "</span>";
+      var color   = e.accent_color || "#6366f1";
+      var topStyle = "border-top: 3px solid " + color + ";";
+      return '<span class="cell-name" style="' + topStyle + '">'
+           + escapeHtml(e.full_name)
+           + "</span>";
     }).join("");
   }
 
@@ -356,29 +394,27 @@ function doExport() {
     return;
   }
 
-  // Strip availability overlay for a clean schedule export.
-  // Cells assigned HERE keep their blue; everything else goes neutral.
+  // Strip ALL colour states for a clean, uniform exported schedule.
+  // Employee identity is conveyed by name + accent-colour stripe, not cell background.
   var cells    = Array.from(document.querySelectorAll(".admin-cell"));
   var snapshot = cells.map(function (cell) {
     return {
-      available:   cell.classList.contains("available"),
-      unavail:     cell.classList.contains("unavail"),
+      available:    cell.classList.contains("available"),
+      unavail:      cell.classList.contains("unavail"),
+      assignedHere: cell.classList.contains("cell-assigned-here"),
     };
   });
   cells.forEach(function (cell) {
-    if (!cell.classList.contains("cell-assigned-here")) {
-      cell.classList.remove("available", "unavail");
-      cell.classList.add("cell-neutral");
-    }
+    cell.classList.remove("available", "unavail", "cell-assigned-here");
+    cell.classList.add("cell-neutral");
   });
 
   function restoreCells() {
     cells.forEach(function (cell, i) {
-      if (!cell.classList.contains("cell-assigned-here")) {
-        cell.classList.remove("cell-neutral");
-        if (snapshot[i].available) cell.classList.add("available");
-        if (snapshot[i].unavail)   cell.classList.add("unavail");
-      }
+      cell.classList.remove("cell-neutral");
+      if (snapshot[i].available)    cell.classList.add("available");
+      if (snapshot[i].unavail)      cell.classList.add("unavail");
+      if (snapshot[i].assignedHere) cell.classList.add("cell-assigned-here");
     });
   }
 

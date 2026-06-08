@@ -12,7 +12,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False)  # 'employee' or 'admin'
-    full_name = db.Column(db.String(120), nullable=False)
+    full_name    = db.Column(db.String(120), nullable=False)
+    accent_color = db.Column(db.String(20),  nullable=True,  default=None)
 
     availabilities = db.relationship("Availability", backref="user", lazy=True, cascade="all, delete-orphan")
     shifts = db.relationship("Shift", backref="user", lazy=True, cascade="all, delete-orphan")

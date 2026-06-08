@@ -437,6 +437,65 @@ small { font-size: 0.78em; }
 }
 
 /* ============================================================
+   EMPLOYEE — ACCENT COLOUR PICKER
+   ============================================================ */
+.accent-picker-card {
+  background: var(--bg-medium);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px 20px;
+  margin-top: 22px;
+}
+
+.accent-picker-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.accent-picker-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.accent-picker-hint {
+  font-size: 0.76rem;
+  color: #4a4a6a;
+}
+
+.color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.color-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+  outline: none;
+}
+
+.color-swatch:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.18);
+}
+
+.color-swatch.selected {
+  border-color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.28);
+}
+
+/* ============================================================
    ADMIN DASHBOARD — LAYOUT
    ============================================================ */
 .admin-main {
@@ -640,7 +699,7 @@ small { font-size: 0.78em; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
   padding: 6px 4px;
   min-height: 52px;
   width: 100%;
@@ -648,12 +707,13 @@ small { font-size: 0.78em; }
 
 .cell-name {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.78rem;     /* slightly larger than before */
   font-weight: 700;
   color: #fff;
-  background: rgba(0, 0, 0, 0.30);
-  padding: 2px 7px;
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.32);
+  padding: 3px 8px 3px;
+  border-radius: 0 0 4px 4px;  /* flat top (stripe sits there), rounded bottom */
+  border-top: 3px solid #6366f1; /* overridden by inline style per employee */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -684,6 +744,9 @@ small { font-size: 0.78em; }
 }
 
 #export-target .day-label small { color: var(--text-muted); }
+
+/* cell-neutral inside the export target: slightly lighter so names pop */
+#export-target .calendar-cell.cell-neutral { background-color: #1e1e40; }
 
 /* ============================================================
    RESPONSIVE
