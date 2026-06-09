@@ -2,17 +2,17 @@
    CSS CUSTOM PROPERTIES
    ============================================================ */
 :root {
-  --bg-dark:    #1a1a2e;
-  --bg-medium:  #16213e;
-  --accent:     #e94560;
-  --accent-h:   #c73852;
-  --text-light: #eaeaea;
-  --text-muted: #9090b0;
-  --available:  #2d6a4f;
-  --unavail:    #9b2226;
-  --assigned:           #1e3a6e;   /* blue  — assigned to this branch */
-  --assigned-elsewhere: #3d3d58;   /* grey  — assigned at another branch */
-  --border:     #2a2a4a;
+  --bg-dark:    #000000;
+  --bg-medium:  #0a0007;
+  --accent:     #ff1a6c;
+  --accent-h:   #d4135a;
+  --text-light: #ffffff;
+  --text-muted: #b07090;
+  --available:  #0a5c38;
+  --unavail:    #7a1020;
+  --assigned:           #1a1060;   /* blue  — assigned to this branch */
+  --assigned-elsewhere: #2a2030;   /* grey  — assigned at another branch */
+  --border:     #3a0828;
   --radius:     8px;
 }
 
@@ -86,17 +86,20 @@ small { font-size: 0.78em; }
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  background: radial-gradient(ellipse at 60% 40%, #1e1e40 0%, var(--bg-dark) 70%);
+  background: radial-gradient(ellipse at 50% 20%, #280012 0%, #000000 65%);
 }
 
 .login-card {
-  background: var(--bg-medium);
+  background: #07000d;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 48px 40px 40px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+  box-shadow:
+    0 0 0 1px rgba(255,26,108,0.08),
+    0 0 60px rgba(255,26,108,0.12),
+    0 24px 64px rgba(0,0,0,0.85);
 }
 
 .login-logo {
@@ -104,17 +107,13 @@ small { font-size: 0.78em; }
   margin-bottom: 36px;
 }
 
-.login-logo .logo-icon {
-  font-size: 52px;
+.logo-img-login {
   display: block;
-  margin-bottom: 10px;
-}
-
-.login-logo h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--text-light);
-  letter-spacing: -0.3px;
+  margin: 0 auto 14px;
+  height: 110px;
+  width: auto;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 18px rgba(255,26,108,0.55));
 }
 
 .login-logo p {
@@ -151,11 +150,11 @@ small { font-size: 0.78em; }
 
 .form-group input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(233,69,96,0.18);
+  box-shadow: 0 0 0 3px rgba(255,26,108,0.18), 0 0 10px rgba(255,26,108,0.12);
 }
 
 .form-group input::placeholder {
-  color: #4a4a6a;
+  color: #4a2030;
 }
 
 .btn-primary {
@@ -185,9 +184,10 @@ small { font-size: 0.78em; }
 }
 
 .dash-header {
-  background: var(--bg-dark);
+  background: #000000;
   border-bottom: 1px solid var(--border);
-  padding: 14px 32px;
+  box-shadow: 0 1px 20px rgba(255,26,108,0.08);
+  padding: 10px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -197,10 +197,12 @@ small { font-size: 0.78em; }
   z-index: 200;
 }
 
-.logo-text {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-light);
+.logo-img-header {
+  height: 44px;
+  width: auto;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 10px rgba(255,26,108,0.5));
+  display: block;
 }
 
 .header-right {
@@ -305,6 +307,8 @@ small { font-size: 0.78em; }
   font-size: 1.55rem;
   font-weight: 700;
   margin-bottom: 6px;
+  color: var(--accent);
+  text-shadow: 0 0 14px rgba(255,26,108,0.45);
 }
 
 .week-label {
@@ -366,7 +370,7 @@ small { font-size: 0.78em; }
 .day-label small {
   display: block;
   font-size: 0.73rem;
-  color: #6a6a8a;
+  color: #6a3050;
   font-weight: 400;
   margin-top: 2px;
 }
@@ -448,7 +452,7 @@ small { font-size: 0.78em; }
    BRANCH TAB BAR  (Chrome-style)
    ============================================================ */
 .branch-tab-bar {
-  background: #0e0e24;
+  background: #000000;
   padding: 10px 24px 0;
   display: flex;
   align-items: flex-end;
@@ -459,11 +463,11 @@ small { font-size: 0.78em; }
 
 .branch-tab {
   position: relative;
-  bottom: -2px;           /* sit over the border-bottom of the bar */
+  bottom: -2px;
   padding: 9px 26px 10px;
   min-width: 130px;
   text-align: center;
-  background: #1a1a32;
+  background: #0d000a;
   color: var(--text-muted);
   border: 1px solid var(--border);
   border-bottom: none;
@@ -472,22 +476,22 @@ small { font-size: 0.78em; }
   font-weight: 600;
   cursor: pointer;
   transition: background 0.14s, color 0.14s;
-  /* subtle inner-shadow to mimic depth */
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: inset 0 1px 0 rgba(255,26,108,0.04);
 }
 
 .branch-tab:not(.active):hover {
-  background: #1e1e3e;
+  background: #160010;
   color: var(--text-light);
 }
 
 .branch-tab.active {
-  background: var(--bg-dark);           /* #1a1a2e — matches admin-main */
-  color: var(--text-light);
+  background: #000000;
+  color: var(--accent);
   border-color: var(--border);
-  border-bottom: 2px solid var(--bg-dark); /* hides the bar's bottom border */
+  border-bottom: 2px solid #000000;
   z-index: 1;
-  box-shadow: inset 0 2px 0 var(--accent);  /* accent top-stripe */
+  text-shadow: 0 0 10px rgba(255,26,108,0.6);
+  box-shadow: inset 0 2px 0 var(--accent), 0 0 12px rgba(255,26,108,0.1);
 }
 
 .branch-tab-empty {
@@ -524,7 +528,7 @@ small { font-size: 0.78em; }
 
 .accent-picker-hint {
   font-size: 0.76rem;
-  color: #4a4a6a;
+  color: #6a3050;
 }
 
 .color-swatches {
@@ -615,7 +619,7 @@ small { font-size: 0.78em; }
 }
 
 .search-input:focus         { border-color: var(--accent); }
-.search-input::placeholder  { color: #4a4a6a; }
+.search-input::placeholder  { color: #4a1a2a; }
 
 .employee-list {
   list-style: none;
@@ -694,7 +698,7 @@ small { font-size: 0.78em; }
 .swatch-unavail  { background: var(--unavail); }
 .swatch-assigned    { background: var(--assigned); border: 1px solid #3b6cb0; }
 .swatch-elsewhere   { background: var(--assigned-elsewhere); border: 1px solid #5a5a7a; }
-.swatch-neutral  { background: #2a2a4a; border: 1px solid #3a3a5a; }
+.swatch-neutral  { background: #100010; border: 1px solid #3a0828; }
 
 /* ── RIGHT PANEL ───────────────────────────────────────────── */
 .panel-right {
@@ -728,7 +732,7 @@ small { font-size: 0.78em; }
 
 /* ── Export target ─────────────────────────────────────────── */
 #export-target {
-  background: #1c1c38;
+  background: #0a0007;
   border-radius: 10px;
   padding: 22px 20px 20px;
   overflow-x: auto;
@@ -748,9 +752,10 @@ small { font-size: 0.78em; }
 .cal-branch-title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--text-light);
+  color: var(--accent);
   letter-spacing: -0.3px;
   text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(255,26,108,0.5);
 }
 
 .cal-week-label {
@@ -772,7 +777,7 @@ small { font-size: 0.78em; }
 .admin-cell.cell-assigned-here:hover { filter: brightness(1.22); }
 
 /* ── Cell colour states ────────────────────────────────────── */
-.calendar-cell.cell-neutral           { background-color: #22224a; }
+.calendar-cell.cell-neutral           { background-color: #100010; }
 .calendar-cell.cell-assigned-here     { background-color: var(--assigned); }
 .calendar-cell.cell-assigned-elsewhere { background-color: var(--assigned-elsewhere); cursor: default; }
 
@@ -830,7 +835,7 @@ small { font-size: 0.78em; }
 #export-target .day-label small { color: var(--text-muted); }
 
 /* cell-neutral inside the export target: slightly lighter so names pop */
-#export-target .calendar-cell.cell-neutral { background-color: #1e1e40; }
+#export-target .calendar-cell.cell-neutral { background-color: #180010; }
 
 /* ============================================================
    RESPONSIVE

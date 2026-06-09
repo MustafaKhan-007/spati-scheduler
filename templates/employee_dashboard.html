@@ -6,7 +6,7 @@
 
   <header class="dash-header">
     <div class="header-left">
-      <span class="logo-text">🏪 Spati Scheduler</span>
+      <img src="{{ url_for('static', filename='logo.png') }}" class="logo-img-header" alt="Späti 4 You" />
     </div>
     <div class="header-right">
       <span class="greeting">{{ t.greeting }}, {{ current_user.full_name }} 👋</span>
