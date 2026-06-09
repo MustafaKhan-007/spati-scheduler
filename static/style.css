@@ -159,30 +159,38 @@ small { font-size: 0.78em; }
 /* ── password show/hide wrapper ─────────────────────────────── */
 .pw-wrap {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
 }
 
+/* input fills the wrapper normally; extra right-padding leaves room for the eye */
 .pw-wrap input {
-  flex: 1;
-  padding-right: 42px;
+  width: 100%;
+  padding-right: 42px !important;
 }
 
 .pw-toggle {
   position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none !important;
+  border: none !important;
+  outline: none;
+  box-shadow: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+  margin: 0;
   color: var(--text-muted);
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: color 0.15s;
   line-height: 0;
+  width: 20px;
+  height: 20px;
 }
 .pw-toggle:hover { color: var(--accent); }
-.pw-toggle svg   { width: 17px; height: 17px; }
+.pw-toggle svg   { width: 18px; height: 18px; display: block; }
 
 .btn-primary {
   width: 100%;
