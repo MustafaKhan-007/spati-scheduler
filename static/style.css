@@ -584,7 +584,7 @@ small { font-size: 0.78em; }
   position: sticky;
   top: 74px;
   max-height: calc(100vh - 96px);
-  overflow-y: auto;
+  overflow-y: visible;  /* panel itself doesn't scroll — list does */
 }
 
 .panel-left h3 {
@@ -624,6 +624,29 @@ small { font-size: 0.78em; }
   display: flex;
   flex-direction: column;
   gap: 3px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 4px;   /* room for the scrollbar */
+
+  /* ── custom scrollbar ── */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+/* Webkit (Chrome / Edge / Safari) */
+.employee-list::-webkit-scrollbar {
+  width: 5px;
+}
+.employee-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.employee-list::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 99px;
+  opacity: 0.7;
+}
+.employee-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-h);
 }
 
 .employee-item {
