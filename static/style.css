@@ -2,17 +2,17 @@
    CSS CUSTOM PROPERTIES
    ============================================================ */
 :root {
-  --bg-dark:    #0a0410;
-  --bg-medium:  #110818;
-  --accent:     #ff1a6c;
-  --accent-h:   #d4135a;
-  --text-light: #ffffff;
-  --text-muted: #b07090;
-  --available:  #0a5c38;
-  --unavail:    #7a1020;
-  --assigned:           #1a1060;   /* blue  — assigned to this branch */
-  --assigned-elsewhere: #2a2030;   /* grey  — assigned at another branch */
-  --border:     #3a0828;
+  --bg-dark:    #150920;   /* deep eggplant — rich but easy on the eye */
+  --bg-medium:  #1e1030;   /* slightly lifted purple for cards & panels */
+  --accent:     #ff2d78;   /* neon pink — same hue, tiny brightness lift */
+  --accent-h:   #d42065;
+  --text-light: #f2e6f7;   /* warm near-white, less eye-searing than pure #fff */
+  --text-muted: #9b6e8a;
+  --available:  #0d6640;
+  --unavail:    #821828;
+  --assigned:           #1c1870;
+  --assigned-elsewhere: #2e2040;
+  --border:     #4a1a40;   /* muted plum border */
   --radius:     8px;
 }
 
@@ -86,11 +86,11 @@ small { font-size: 0.78em; }
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  background: radial-gradient(ellipse at 50% 20%, #360018 0%, #0a0410 65%);
+  background: radial-gradient(ellipse at 50% 25%, #3a1050 0%, #100620 70%);
 }
 
 .login-card {
-  background: #110818;
+  background: #1a0c28;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 48px 40px 40px;
@@ -109,10 +109,10 @@ small { font-size: 0.78em; }
 
 .logo-img-login {
   display: block;
-  margin: 0 auto 14px;
-  height: 155px;
+  margin: 0 auto 10px;
+  height: 190px;
   width: auto;
-  filter: drop-shadow(0 0 22px rgba(255,26,108,0.55));
+  filter: drop-shadow(0 0 28px rgba(255,45,120,0.6));
 }
 
 .login-logo p {
@@ -183,10 +183,10 @@ small { font-size: 0.78em; }
 }
 
 .dash-header {
-  background: #0a0410;
+  background: var(--bg-dark);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 20px rgba(255,26,108,0.08);
-  padding: 10px 32px;
+  box-shadow: 0 1px 24px rgba(255,45,120,0.1);
+  padding: 8px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -197,9 +197,9 @@ small { font-size: 0.78em; }
 }
 
 .logo-img-header {
-  height: 58px;
+  height: 80px;
   width: auto;
-  filter: drop-shadow(0 0 12px rgba(255,26,108,0.5));
+  filter: drop-shadow(0 0 14px rgba(255,45,120,0.55));
   display: block;
 }
 
@@ -450,7 +450,7 @@ small { font-size: 0.78em; }
    BRANCH TAB BAR  (Chrome-style)
    ============================================================ */
 .branch-tab-bar {
-  background: #0a0410;
+  background: var(--bg-dark);
   padding: 10px 24px 0;
   display: flex;
   align-items: flex-end;
@@ -465,7 +465,7 @@ small { font-size: 0.78em; }
   padding: 9px 26px 10px;
   min-width: 130px;
   text-align: center;
-  background: #0d000a;
+  background: #1a0e28;
   color: var(--text-muted);
   border: 1px solid var(--border);
   border-bottom: none;
@@ -478,12 +478,12 @@ small { font-size: 0.78em; }
 }
 
 .branch-tab:not(.active):hover {
-  background: #160010;
+  background: #221035;
   color: var(--text-light);
 }
 
 .branch-tab.active {
-  background: #0a0410;
+  background: var(--bg-dark);
   color: var(--accent);
   border-color: var(--border);
   border-bottom: 2px solid #000000;
