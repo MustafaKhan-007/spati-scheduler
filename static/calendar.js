@@ -310,7 +310,7 @@ function renderCell(cell) {
     }
   } else {
     // No shift — colour by own availability
-    var avail = employeeAvailability[key] !== false;
+    var avail = employeeAvailability[key] === true;
     cell.classList.add(avail ? "available" : "unavail");
     cell.dataset.shiftAssigned = "false";
   }

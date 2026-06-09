@@ -78,8 +78,8 @@ def get_availability():
         week_start=week_start,
     ).all()
 
-    # Pre-fill every slot as available (True) — only override with explicit records
-    data = {f"{day}_{slot}": True for day in range(7) for slot in _SLOTS}
+    # Pre-fill every slot as unavailable (False) — only override with explicit records
+    data = {f"{day}_{slot}": False for day in range(7) for slot in _SLOTS}
     for r in rows:
         data[f"{r.day_of_week}_{r.slot}"] = r.is_available
 
