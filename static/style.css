@@ -1261,21 +1261,53 @@ small { font-size: 0.78em; }
     -webkit-overflow-scrolling: touch;
     border-radius: 8px;
   }
-  .calendar-cell { min-width: 72px; height: 68px; }
-  .calendar-table thead th { padding: 10px 8px; font-size: 0.76rem; }
+  .calendar-cell { min-width: 68px; height: 60px; }
+  .calendar-table thead th { padding: 8px 4px; font-size: 0.72rem; }
   .day-label {
-    padding: 10px 10px 10px 12px !important;
-    font-size: 0.82rem;
-    min-width: 72px;
+    padding: 8px 6px 8px 8px !important;
+    font-size: 0.78rem;
+    min-width: 60px;
   }
-  .day-label small { font-size: 0.68rem; }
+  .day-label small { font-size: 0.64rem; }
   .cell-name { font-size: 0.74rem; padding: 3px 6px; }
 
   /* ── Right panel / export ─────────────────────────────────── */
-  .panel-right       { padding: 14px 12px 18px; }
-  .btn-export        { width: 100%; padding: 12px; font-size: 0.9rem; }
-  .cal-branch-title  { font-size: 1.1rem; }
-  .cal-week-label    { font-size: 0.76rem; }
+  /* Strip the outer card — let #export-target be the only card  */
+  .panel-right {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    gap: 8px;
+  }
+  .panel-right-controls { width: 100%; }
+  .btn-export           { width: 100%; padding: 12px; font-size: 0.9rem; }
+
+  /* Tighten the inner export-target card and remove its own scroll
+     (calendar-wrapper handles horizontal scrolling instead)       */
+  #export-target {
+    padding: 12px 10px 14px !important;
+    overflow-x: visible !important;
+  }
+
+  /* Stack branch title + week label vertically on narrow screens  */
+  .cal-branch-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+  .cal-branch-title  { font-size: 1.05rem; }
+  .cal-week-label    { font-size: 0.72rem; white-space: normal; }
+
+  /* Clip long employee names inside cells instead of overflowing */
+  .cell-name {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   /* ── Employee dashboard ───────────────────────────────────── */
   .action-row            { flex-direction: column; }
