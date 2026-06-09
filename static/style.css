@@ -1127,13 +1127,26 @@ small { font-size: 0.78em; }
 @media (max-width: 900px), (hover: none) and (pointer: coarse) {
 
   /* ── Header ───────────────────────────────────────────────── */
-  .dash-header       { padding: 6px 12px; gap: 8px; }
-  .logo-img-header   { height: 46px; }
+  .dash-header {
+    padding: 6px 0 6px 10px; /* remove right padding — header-right handles its own */
+    gap: 0;
+    justify-content: flex-start; /* logo stays left, margin-left:auto pushes right block */
+  }
+  .logo-img-header   { height: 40px; flex-shrink: 0; }
+  .header-left       { flex-shrink: 0; }
   .week-badge        { display: none; }
   .greeting          { display: none; }
-  .header-right      { gap: 8px; font-size: 0.8rem; }
+  .header-right {
+    margin-left: auto;      /* push all the way to the right */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    padding-right: 10px;    /* breathing room from screen edge */
+    flex-shrink: 0;
+  }
   .logout-link       { font-size: 0.82rem; }
-  .lang-btn          { padding: 3px 6px; font-size: 0.72rem; }
+  .lang-btn          { padding: 3px 5px; font-size: 0.7rem; }
 
   /* ── Login page ───────────────────────────────────────────── */
   .login-page        { padding: 16px 12px; align-items: flex-start; padding-top: 40px; }
