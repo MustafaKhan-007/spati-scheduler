@@ -1110,50 +1110,169 @@ small { font-size: 0.78em; }
 .modal-warn-text  { font-size: 0.8rem;  color: #c07050; margin-bottom: 4px; }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE  — desktop tweaks only
    ============================================================ */
 @media (max-width: 900px) {
   .admin-panels { grid-template-columns: 200px 1fr; }
 }
 
+/* The mobile toggle button is always in the DOM but hidden on desktop */
+.panel-mobile-toggle { display: none; }
+.panel-desktop-h3    { display: block; }
+.panel-left-body     { display: contents; } /* transparent wrapper on desktop */
+
+/* ============================================================
+   MOBILE  (≤ 768px)
+   ============================================================ */
 @media (max-width: 768px) {
-  .dash-header      { padding: 12px 16px; }
-  .dash-main        { padding: 20px 14px; }
-  .admin-main       { padding: 14px; }
-  .branch-tab-bar   { padding: 8px 14px 0; }
 
-  .admin-panels {
-    grid-template-columns: 1fr;
+  /* ── Header ───────────────────────────────────────────────── */
+  .dash-header       { padding: 6px 12px; gap: 8px; }
+  .logo-img-header   { height: 46px; }
+  .week-badge        { display: none; }
+  .greeting          { display: none; }
+  .header-right      { gap: 8px; font-size: 0.8rem; }
+  .logout-link       { font-size: 0.82rem; }
+  .lang-btn          { padding: 3px 6px; font-size: 0.72rem; }
+
+  /* ── Login page ───────────────────────────────────────────── */
+  .login-page        { padding: 16px 12px; align-items: flex-start; padding-top: 40px; }
+  .login-card        { padding: 28px 20px 24px; max-width: 100%; }
+  .logo-img-login    { height: 110px; }
+  .lang-switcher-login { margin-bottom: 14px; }
+
+  /* ── Branch tab bar: horizontal scroll ───────────────────── */
+  .branch-tab-bar {
+    padding: 8px 12px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
   }
+  .branch-tab-bar::-webkit-scrollbar { display: none; }
+  .branch-tab { flex-shrink: 0; min-width: 90px; padding: 8px 14px 9px; font-size: 0.82rem; }
 
+  /* ── Admin layout: stacked ────────────────────────────────── */
+  .admin-main    { padding: 10px 10px 24px; }
+  .admin-panels  { grid-template-columns: 1fr; gap: 10px; }
+
+  /* ── Panel left: collapsible on mobile ───────────────────── */
   .panel-left {
     position: static;
     max-height: none;
+    overflow-y: visible;
+    padding: 0;
+    gap: 0;
   }
 
-  .calendar-cell {
-    min-width: 60px;
-    min-height: 52px;
+  /* show toggle button, hide desktop h3 */
+  .panel-mobile-toggle { display: flex; }
+  .panel-desktop-h3    { display: none; }
+
+  .panel-mobile-toggle {
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-medium);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    transition: background 0.15s;
+  }
+  .panel-mobile-toggle:hover { background: #221035; }
+  .panel-toggle-icon {
+    width: 18px; height: 18px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .panel-mobile-toggle[aria-expanded="false"] .panel-toggle-icon {
+    transform: rotate(180deg);
   }
 
-  .header-right { gap: 12px; font-size: 0.82rem; }
-  .logo-text    { font-size: 0.95rem; }
-  .greeting     { display: none; }
+  /* body wrapper becomes a real block on mobile */
+  .panel-left-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-medium);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 14px 14px 16px;
+    overflow: hidden;
+    max-height: 600px;
+    transition: max-height 0.25s ease, padding 0.25s ease, border-width 0.25s;
+  }
+  .panel-left-body.panel-collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
+  }
 
-  .cal-branch-title { font-size: 1.15rem; }
+  .employee-list { max-height: 200px; }
+  .employee-item { padding: 12px 12px; }
+  .emp-name      { font-size: 0.92rem; }
+  .emp-remove-btn { opacity: 0.7; }   /* always visible — no hover on touch */
+
+  /* ── Calendar ─────────────────────────────────────────────── */
+  .dash-main { padding: 14px 10px; }
+  .calendar-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+  }
+  .calendar-cell { min-width: 72px; height: 68px; }
+  .calendar-table thead th { padding: 10px 8px; font-size: 0.76rem; }
+  .day-label {
+    padding: 10px 10px 10px 12px !important;
+    font-size: 0.82rem;
+    min-width: 72px;
+  }
+  .day-label small { font-size: 0.68rem; }
+  .cell-name { font-size: 0.74rem; padding: 3px 6px; }
+
+  /* ── Right panel / export ─────────────────────────────────── */
+  .panel-right       { padding: 14px 12px 18px; }
+  .btn-export        { width: 100%; padding: 12px; font-size: 0.9rem; }
+  .cal-branch-title  { font-size: 1.1rem; }
+  .cal-week-label    { font-size: 0.76rem; }
+
+  /* ── Employee dashboard ───────────────────────────────────── */
+  .action-row            { flex-direction: column; }
+  .action-row .btn-primary { width: 100%; }
+  .btn-change-pw         { width: 100%; }
+  .color-swatch          { width: 30px; height: 30px; }
+
+  /* ── Modals: bottom sheet ─────────────────────────────────── */
+  .modal-overlay { align-items: flex-end; }
+  .modal-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 18px 18px 0 0;
+    padding: 28px 20px 36px;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 0;
+  }
+  .modal-actions { flex-direction: column-reverse; gap: 8px; }
+  .modal-btn     { width: 100%; padding: 13px; text-align: center; }
+
+  .btn-add-employee { padding: 12px; font-size: 0.88rem; }
 }
 
-@media (max-width: 480px) {
-  .login-card { padding: 32px 22px; }
-
-  .calendar-cell { min-width: 44px; min-height: 44px; }
-
-  .calendar-table thead th,
-  .day-label {
-    padding: 7px 8px !important;
-    font-size: 0.72rem;
-  }
-
-  .cell-name      { font-size: 0.72rem; padding: 3px 6px; }
-  .branch-tab     { padding: 7px 14px; font-size: 0.82rem; min-width: 90px; }
+/* ── Extra-small phones (≤ 380px) ────────────────────────────── */
+@media (max-width: 380px) {
+  .logo-img-header { height: 38px; }
+  .logo-img-login  { height: 90px; }
+  .branch-tab      { min-width: 78px; font-size: 0.78rem; padding: 7px 10px; }
+  .calendar-cell   { min-width: 62px; height: 58px; }
+  .cell-name       { font-size: 0.68rem; }
+  .login-card      { padding: 22px 16px; }
 }

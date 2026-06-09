@@ -49,7 +49,13 @@
 
       <!-- ── LEFT: Employee selector ─────────────────────────────── -->
       <aside class="panel-left">
-        <h3>{{ t.employees }}</h3>
+        <!-- mobile collapse toggle (hidden on desktop) -->
+        <button class="panel-mobile-toggle" id="panel-toggle-btn" aria-expanded="true">
+          <span>{{ t.employees }}</span>
+          <svg class="panel-toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <div class="panel-left-body" id="panel-left-body">
+        <h3 class="panel-desktop-h3">{{ t.employees }}</h3>
         <p class="panel-hint">{{ t.overlay_hint }}</p>
         <input
           type="text"
@@ -97,6 +103,7 @@
           <div class="legend-row"><span class="swatch swatch-elsewhere"></span>{{ t.legend_elsewhere }}</div>
           <div class="legend-row"><span class="swatch swatch-neutral"></span>{{ t.legend_neutral }}</div>
         </div>
+        </div><!-- /.panel-left-body -->
       </aside>
 
       <!-- ── RIGHT: Calendar ─────────────────────────────────────── -->
@@ -224,6 +231,17 @@
 <script>
   const WEEK_START = "{{ week_start }}";
   const PAGE_TYPE  = "admin";
+
+  // Mobile panel collapse toggle
+  (function () {
+    var btn  = document.getElementById("panel-toggle-btn");
+    var body = document.getElementById("panel-left-body");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var open = body.classList.toggle("panel-collapsed");
+      btn.setAttribute("aria-expanded", !open);
+    });
+  })();
   const T = {
     toast_saved:        "{{ t.toast_saved | e }}",
     toast_save_err:     "{{ t.toast_save_err | e }}",
