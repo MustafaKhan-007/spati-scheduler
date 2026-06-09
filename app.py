@@ -95,5 +95,21 @@ def _ensure_branches():
 
 app = create_app()
 
+
+@app.cli.command("reset-availability")
+def reset_availability():
+    """Delete all availability records for the current week (testing helper)."""
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    from models import Availability
+
+    today      = datetime.now(ZoneInfo("Europe/Berlin")).date()
+    week_start = today - timedelta(days=today.weekday())
+
+    deleted = Availability.query.filter_by(week_start=week_start).delete()
+    db.session.commit()
+    print(f"Deleted {deleted} availability record(s) for week of {week_start}.")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
