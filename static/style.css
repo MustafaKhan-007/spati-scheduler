@@ -1119,7 +1119,13 @@ small { font-size: 0.78em; }
 /* The mobile toggle button is always in the DOM but hidden on desktop */
 .panel-mobile-toggle { display: none; }
 .panel-desktop-h3    { display: block; }
-.panel-left-body     { display: contents; } /* transparent wrapper on desktop */
+/* On desktop panel-left-body is just an inner flex column filling the panel */
+.panel-left-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
 
 /* ============================================================
    MOBILE  (≤ 768px)
