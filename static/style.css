@@ -2,8 +2,8 @@
    CSS CUSTOM PROPERTIES
    ============================================================ */
 :root {
-  --bg-dark:    #000000;
-  --bg-medium:  #0a0007;
+  --bg-dark:    #0a0410;
+  --bg-medium:  #110818;
   --accent:     #ff1a6c;
   --accent-h:   #d4135a;
   --text-light: #ffffff;
@@ -86,11 +86,11 @@ small { font-size: 0.78em; }
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  background: radial-gradient(ellipse at 50% 20%, #280012 0%, #000000 65%);
+  background: radial-gradient(ellipse at 50% 20%, #360018 0%, #0a0410 65%);
 }
 
 .login-card {
-  background: #07000d;
+  background: #110818;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 48px 40px 40px;
@@ -110,10 +110,9 @@ small { font-size: 0.78em; }
 .logo-img-login {
   display: block;
   margin: 0 auto 14px;
-  height: 110px;
+  height: 155px;
   width: auto;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 18px rgba(255,26,108,0.55));
+  filter: drop-shadow(0 0 22px rgba(255,26,108,0.55));
 }
 
 .login-logo p {
@@ -184,7 +183,7 @@ small { font-size: 0.78em; }
 }
 
 .dash-header {
-  background: #000000;
+  background: #0a0410;
   border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 20px rgba(255,26,108,0.08);
   padding: 10px 32px;
@@ -198,10 +197,9 @@ small { font-size: 0.78em; }
 }
 
 .logo-img-header {
-  height: 44px;
+  height: 58px;
   width: auto;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 10px rgba(255,26,108,0.5));
+  filter: drop-shadow(0 0 12px rgba(255,26,108,0.5));
   display: block;
 }
 
@@ -452,7 +450,7 @@ small { font-size: 0.78em; }
    BRANCH TAB BAR  (Chrome-style)
    ============================================================ */
 .branch-tab-bar {
-  background: #000000;
+  background: #0a0410;
   padding: 10px 24px 0;
   display: flex;
   align-items: flex-end;
@@ -485,7 +483,7 @@ small { font-size: 0.78em; }
 }
 
 .branch-tab.active {
-  background: #000000;
+  background: #0a0410;
   color: var(--accent);
   border-color: var(--border);
   border-bottom: 2px solid #000000;
