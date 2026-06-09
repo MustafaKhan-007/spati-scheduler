@@ -1121,9 +1121,10 @@ small { font-size: 0.78em; }
 }
 
 /* ============================================================
-   MOBILE  (≤ 900px — covers portrait + landscape phones)
+   MOBILE  (≤ 900px  OR  any touch device — covers portrait,
+   landscape, and Chrome "Desktop site" mode on Android/iOS)
    ============================================================ */
-@media (max-width: 900px) {
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
 
   /* ── Header ───────────────────────────────────────────────── */
   .dash-header       { padding: 6px 12px; gap: 8px; }
@@ -1300,7 +1301,7 @@ small { font-size: 0.78em; }
 }
 
 /* ── Extra-small phones (≤ 380px) ────────────────────────────── */
-@media (max-width: 380px) {
+@media (max-width: 380px), (hover: none) and (pointer: coarse) and (max-width: 420px) {
   .logo-img-header { height: 38px; }
   .logo-img-login  { height: 90px; }
   .branch-tab      { min-width: 78px; font-size: 0.78rem; padding: 7px 10px; }
