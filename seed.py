@@ -53,18 +53,18 @@ EMPLOYEES = [
 ]
 
 # ── Admin account (kept across resets) ──────────────────────────────────────
-ADMIN = {"username": "admin", "password": "admin999", "full_name": "Owner", "role": "admin"}
+ADMIN = {"username": "admin", "password": "S4U21", "full_name": "Admin", "role": "admin"}
 
 
 def _reset(ctx):
-    """Wipe all schedule data, employees and branches."""
+    """Wipe all schedule data, employees, branches, AND the admin account."""
     print("⚠  Resetting database …")
     Shift.query.delete()
     Availability.query.delete()
-    User.query.filter_by(role="employee").delete()
+    User.query.delete()   # removes everyone, including admin
     Branch.query.delete()
     db.session.commit()
-    print("   All employees, branches and schedule data removed.\n")
+    print("   All users, branches and schedule data removed.\n")
 
 
 def seed(reset=False):
@@ -74,8 +74,12 @@ def seed(reset=False):
         if reset:
             _reset(app.app_context())
 
-        # Admin
-        if not User.query.filter_by(username=ADMIN["username"]).first():
+        # Admin — always create or update password
+        existing_admin = User.query.filter_by(username=ADMIN["username"]).first()
+        if existing_admin:
+            existing_admin.password_hash = generate_password_hash(ADMIN["password"])
+            print(f"  ✓ Admin password updated")
+        else:
             db.session.add(User(
                 username=ADMIN["username"],
                 password_hash=generate_password_hash(ADMIN["password"]),
@@ -83,8 +87,6 @@ def seed(reset=False):
                 role=ADMIN["role"],
             ))
             print(f"  ✓ Admin created")
-        else:
-            print(f"  – Admin already exists")
 
         # Employees
         print()
