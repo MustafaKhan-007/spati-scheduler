@@ -1140,16 +1140,40 @@ small { font-size: 0.78em; }
   .logo-img-login    { height: 110px; }
   .lang-switcher-login { margin-bottom: 14px; }
 
-  /* ── Branch tab bar: horizontal scroll ───────────────────── */
+  /* ── Branch tab bar: simple underline style, no gap ──────── */
   .branch-tab-bar {
-    padding: 8px 12px 0;
+    padding: 0 12px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     flex-wrap: nowrap;
+    background: transparent !important;
+    border-bottom: 1px solid var(--border) !important;
+    gap: 0;
+    align-items: flex-end;
   }
   .branch-tab-bar::-webkit-scrollbar { display: none; }
-  .branch-tab { flex-shrink: 0; min-width: 90px; padding: 8px 14px 9px; font-size: 0.82rem; }
+  .branch-tab {
+    flex-shrink: 0;
+    min-width: unset !important;
+    padding: 9px 16px !important;
+    font-size: 0.82rem;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    bottom: 0 !important;
+    box-shadow: none !important;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent !important;
+    margin-bottom: -1px;
+  }
+  .branch-tab.active {
+    background: transparent !important;
+    color: var(--accent) !important;
+    border-bottom: 2px solid var(--accent) !important;
+    text-shadow: 0 0 10px rgba(255,26,108,0.6);
+    box-shadow: none !important;
+  }
 
   /* ── Admin layout: stacked ────────────────────────────────── */
   .admin-main    { padding: 10px 10px 24px; }
@@ -1177,10 +1201,10 @@ small { font-size: 0.78em; }
     justify-content: space-between;
     background: var(--bg-medium);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 13px 16px;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 14px;
     color: var(--accent);
-    font-size: 0.9rem;
+    font-size: 0.84rem;
     font-weight: 700;
     cursor: pointer;
     text-transform: uppercase;
@@ -1201,12 +1225,12 @@ small { font-size: 0.78em; }
   .panel-left-body {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     background: var(--bg-medium);
     border: 1px solid var(--border);
     border-top: none;
     border-radius: 0 0 10px 10px;
-    padding: 14px 14px 16px;
+    padding: 10px 12px 12px;
     overflow: hidden;
     max-height: 600px;
     transition: max-height 0.25s ease, padding 0.25s ease, border-width 0.25s;
@@ -1218,10 +1242,16 @@ small { font-size: 0.78em; }
     border-width: 0;
   }
 
-  .employee-list { max-height: 200px; }
-  .employee-item { padding: 12px 12px; }
-  .emp-name      { font-size: 0.92rem; }
+  .employee-list  { max-height: 180px; }
+  .employee-item  { padding: 7px 10px; }
+  .emp-name       { font-size: 0.84rem; }
+  .avail-status   { font-size: 0.62rem; }
   .emp-remove-btn { opacity: 0.7; }   /* always visible — no hover on touch */
+  .panel-hint     { display: none; }  /* saves space, hint not needed on mobile */
+  .search-input   { padding: 7px 10px; font-size: 0.84rem; }
+  .panel-legend   { gap: 4px; padding-top: 8px; margin-top: 0; }
+  .legend-row     { font-size: 0.7rem; gap: 6px; }
+  .swatch         { width: 12px !important; height: 12px !important; }
 
   /* ── Calendar ─────────────────────────────────────────────── */
   .dash-main { padding: 14px 10px; }
