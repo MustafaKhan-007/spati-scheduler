@@ -1109,13 +1109,6 @@ small { font-size: 0.78em; }
 .modal-body-text  { font-size: 0.9rem;  color: var(--text-light); margin-bottom: 8px; }
 .modal-warn-text  { font-size: 0.8rem;  color: #c07050; margin-bottom: 4px; }
 
-/* ============================================================
-   RESPONSIVE  — desktop tweaks only
-   ============================================================ */
-@media (max-width: 900px) {
-  .admin-panels { grid-template-columns: 200px 1fr; }
-}
-
 /* The mobile toggle button is always in the DOM but hidden on desktop */
 .panel-mobile-toggle { display: none; }
 .panel-desktop-h3    { display: block; }
@@ -1128,9 +1121,9 @@ small { font-size: 0.78em; }
 }
 
 /* ============================================================
-   MOBILE  (≤ 768px)
+   MOBILE  (≤ 900px — covers portrait + landscape phones)
    ============================================================ */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
   /* ── Header ───────────────────────────────────────────────── */
   .dash-header       { padding: 6px 12px; gap: 8px; }
@@ -1160,20 +1153,23 @@ small { font-size: 0.78em; }
 
   /* ── Admin layout: stacked ────────────────────────────────── */
   .admin-main    { padding: 10px 10px 24px; }
-  .admin-panels  { grid-template-columns: 1fr; gap: 10px; }
+  .admin-panels  { grid-template-columns: 1fr !important; gap: 10px; }
 
   /* ── Panel left: collapsible on mobile ───────────────────── */
   .panel-left {
-    position: static;
-    max-height: none;
+    position: static !important;
+    max-height: none !important;
     overflow-y: visible;
-    padding: 0;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
     gap: 0;
   }
 
   /* show toggle button, hide desktop h3 */
-  .panel-mobile-toggle { display: flex; }
-  .panel-desktop-h3    { display: none; }
+  .panel-mobile-toggle { display: flex !important; }
+  .panel-desktop-h3    { display: none !important; }
 
   .panel-mobile-toggle {
     width: 100%;
