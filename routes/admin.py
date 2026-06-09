@@ -187,6 +187,17 @@ def assign_shift():
                 "branch_name": any_existing.branch.name if any_existing.branch else "another branch",
             }), 409
 
+    # Check if this slot at this branch is already taken by a different employee
+    slot_taken = Shift.query.filter_by(
+        branch_id=branch_id,
+        week_start=week_start,
+        day_of_week=day_of_week,
+        slot=slot,
+    ).first()
+    if slot_taken:
+        taken_name = slot_taken.user.full_name if slot_taken.user else "someone"
+        return jsonify({"error": "slot_taken", "employee_name": taken_name}), 409
+
     branch = db.session.get(Branch, branch_id)
     if not branch:
         return jsonify({"error": "Branch not found"}), 404

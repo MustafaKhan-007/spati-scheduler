@@ -64,6 +64,7 @@
             class="employee-item"
             data-user-id="{{ emp.id }}"
             data-name="{{ emp.full_name }}"
+            data-avail-set="{{ 'true' if emp.id in avail_set_ids else 'false' }}"
           >
             <span class="emp-name">{{ emp.full_name }}</span>
             {% if emp.id in avail_set_ids %}
@@ -165,6 +166,7 @@
     toast_colour_saved: "{{ t.toast_colour_saved | e }}",
     toast_colour_err:   "{{ t.toast_colour_err | e }}",
     conflict_msg:       "{{ t.conflict_msg | e }}",
+    slot_taken_msg:     "{{ t.slot_taken_msg | e }}",
   };
 </script>
 <script src="{{ url_for('static', filename='calendar.js') }}"></script>

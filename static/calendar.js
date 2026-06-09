@@ -138,8 +138,9 @@ var activeBranchId   = null;
 var activeBranchName = "";
 
 // Active employee overlay context (null = no employee selected)
-var activeUserId   = null;
-var activeUserName = "";
+var activeUserId       = null;
+var activeUserName     = "";
+var activeUserAvailSet = false;  // true = employee explicitly saved availability this week
 
 // branchSchedule[slot_key] = [{user_id, full_name}, ...]
 var branchSchedule = {};
@@ -193,6 +194,7 @@ function initAdmin() {
         li.classList.remove("selected");
         activeUserId        = null;
         activeUserName      = "";
+        activeUserAvailSet  = false;
         employeeAvailability = {};
         employeeShifts       = {};
         renderAllCells();
@@ -201,8 +203,9 @@ function initAdmin() {
 
       allItems.forEach(function (i) { i.classList.remove("selected"); });
       li.classList.add("selected");
-      activeUserId   = clickedId;
-      activeUserName = li.dataset.name;
+      activeUserId       = clickedId;
+      activeUserName     = li.dataset.name;
+      activeUserAvailSet = (li.dataset.availSet === "true");
 
       loadEmployeeAvailability(activeUserId);
     });
@@ -323,9 +326,13 @@ function onAdminCellClick(cell) {
 
   var isAssignedHere = cell.dataset.shiftAssigned === "true";
   var isAvailable    = cell.classList.contains("available");
+  var isUnavail      = cell.classList.contains("unavail");
 
-  // Only act on green (available) or the cell already assigned to this employee
-  if (!isAvailable && !isAssignedHere) return;
+  // Allow override of red cells only when the employee hasn't saved availability
+  var canOverride = isUnavail && !activeUserAvailSet;
+
+  // Block clicks on grey (assigned elsewhere) and red when availability was set
+  if (!isAvailable && !isAssignedHere && !canOverride) return;
 
   var day  = parseInt(cell.dataset.day, 10);
   var slot = cell.dataset.slot;
@@ -371,6 +378,11 @@ function onAdminCellClick(cell) {
           T.conflict_msg
             .replace("{name}",   activeUserName)
             .replace("{branch}", data.branch_name),
+          "error"
+        );
+      } else if (data.error === "slot_taken") {
+        showToast(
+          T.slot_taken_msg.replace("{name}", data.employee_name),
           "error"
         );
       }

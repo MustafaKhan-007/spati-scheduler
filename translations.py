@@ -68,7 +68,8 @@ TRANSLATIONS = {
         "toast_colour_saved": "✓ Accent colour saved!",
         "toast_colour_err":   "✗ Could not save colour.",
         # {name} and {branch} are replaced in JS
-        "conflict_msg": "✗ {name} is already assigned to \"{branch}\" for this slot.",
+        "conflict_msg":   "✗ {name} is already assigned to \"{branch}\" for this slot.",
+        "slot_taken_msg": "✗ This slot is already filled by {name}.",
     },
 
     # ── German ────────────────────────────────────────────────
@@ -123,7 +124,8 @@ TRANSLATIONS = {
         "toast_net_err":      "✗ Netzwerkfehler.",
         "toast_colour_saved": "✓ Akzentfarbe gespeichert!",
         "toast_colour_err":   "✗ Farbe konnte nicht gespeichert werden.",
-        "conflict_msg": "✗ {name} ist für diesen Slot bereits in \"{branch}\" eingeplant.",
+        "conflict_msg":   "✗ {name} ist für diesen Slot bereits in \"{branch}\" eingeplant.",
+        "slot_taken_msg": "✗ Dieser Slot ist bereits von {name} belegt.",
     },
 
     # ── Turkish ───────────────────────────────────────────────
@@ -178,7 +180,8 @@ TRANSLATIONS = {
         "toast_net_err":      "✗ Ağ hatası.",
         "toast_colour_saved": "✓ Vurgu rengi kaydedildi!",
         "toast_colour_err":   "✗ Renk kaydedilemedi.",
-        "conflict_msg": "✗ {name} bu slot için zaten \"{branch}\" şubesine atandı.",
+        "conflict_msg":   "✗ {name} bu slot için zaten \"{branch}\" şubesine atandı.",
+        "slot_taken_msg": "✗ Bu slot zaten {name} tarafından dolu.",
     },
 }
 
