@@ -14,6 +14,29 @@ document.addEventListener("DOMContentLoaded", function () {
    SHARED UTILITIES
    ============================================================ */
 
+function handleEmployeeItemClick(li) {
+  var allItems  = document.querySelectorAll(".employee-item");
+  var clickedId = parseInt(li.dataset.userId, 10);
+
+  if (activeUserId === clickedId) {
+    li.classList.remove("selected");
+    activeUserId         = null;
+    activeUserName       = "";
+    activeUserAvailSet   = false;
+    employeeAvailability = {};
+    employeeShifts       = {};
+    renderAllCells();
+    return;
+  }
+
+  allItems.forEach(function (i) { i.classList.remove("selected"); });
+  li.classList.add("selected");
+  activeUserId       = clickedId;
+  activeUserName     = li.dataset.name;
+  activeUserAvailSet = (li.dataset.availSet === "true");
+  loadEmployeeAvailability(activeUserId);
+}
+
 function setCellAvailability(cell, available) {
   cell.classList.toggle("available", available);
   cell.classList.toggle("unavail",  !available);
@@ -186,29 +209,7 @@ function initAdmin() {
 
   // Employee selection — click to select, click again to deselect
   allItems.forEach(function (li) {
-    li.addEventListener("click", function () {
-      var clickedId = parseInt(li.dataset.userId, 10);
-
-      if (activeUserId === clickedId) {
-        // Deselect
-        li.classList.remove("selected");
-        activeUserId        = null;
-        activeUserName      = "";
-        activeUserAvailSet  = false;
-        employeeAvailability = {};
-        employeeShifts       = {};
-        renderAllCells();
-        return;
-      }
-
-      allItems.forEach(function (i) { i.classList.remove("selected"); });
-      li.classList.add("selected");
-      activeUserId       = clickedId;
-      activeUserName     = li.dataset.name;
-      activeUserAvailSet = (li.dataset.availSet === "true");
-
-      loadEmployeeAvailability(activeUserId);
-    });
+    li.addEventListener("click", function () { handleEmployeeItemClick(li); });
   });
 
   // Cell click — assign / remove the active employee
@@ -455,3 +456,162 @@ function doExport() {
     alert("Export failed. Please try again.");
   });
 }
+
+/* ============================================================
+   EMPLOYEE MANAGEMENT (admin only)
+   ============================================================ */
+
+// ── Add employee ─────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function () {
+  var addBtn     = document.getElementById("add-employee-btn");
+  var modal      = document.getElementById("add-emp-modal");
+  var cancelBtn  = document.getElementById("add-emp-cancel");
+  var submitBtn  = document.getElementById("add-emp-submit");
+  var doneBtn    = document.getElementById("add-emp-done");
+  var formSec    = document.getElementById("add-emp-form-section");
+  var successSec = document.getElementById("add-emp-success-section");
+  var errMsg     = document.getElementById("add-emp-error");
+
+  if (!addBtn) return;   // not on admin page
+
+  function openAddModal() {
+    document.getElementById("new-emp-fullname").value = "";
+    document.getElementById("new-emp-username").value = "";
+    errMsg.style.display = "none";
+    formSec.style.display    = "block";
+    successSec.style.display = "none";
+    modal.style.display = "flex";
+  }
+
+  function closeAddModal() { modal.style.display = "none"; }
+
+  addBtn.addEventListener("click", openAddModal);
+  cancelBtn.addEventListener("click", closeAddModal);
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) closeAddModal();
+  });
+
+  // Auto-fill username from full name
+  document.getElementById("new-emp-fullname").addEventListener("input", function () {
+    var suggested = this.value.trim().split(/\s+/)[0].toLowerCase().replace(/[^a-z0-9]/g, "");
+    document.getElementById("new-emp-username").value = suggested;
+  });
+
+  submitBtn.addEventListener("click", function () {
+    var fullName = document.getElementById("new-emp-fullname").value.trim();
+    var username = document.getElementById("new-emp-username").value.trim().toLowerCase();
+
+    if (!fullName || !username) {
+      errMsg.textContent = "Please fill in both fields.";
+      errMsg.style.display = "block";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    fetch("/admin/employees", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ full_name: fullName, username: username }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        submitBtn.disabled = false;
+        if (!res.ok) {
+          if (res.data.error === "username_taken") {
+            errMsg.textContent = T.username_taken;
+          } else {
+            errMsg.textContent = res.data.error || "Error creating employee.";
+          }
+          errMsg.style.display = "block";
+          return;
+        }
+        // Show credentials
+        document.getElementById("new-emp-show-username").textContent = res.data.username;
+        document.getElementById("new-emp-show-password").textContent = res.data.password;
+        formSec.style.display    = "none";
+        successSec.style.display = "block";
+
+        // Append to list immediately
+        var ul  = document.getElementById("employee-list");
+        var li  = document.createElement("li");
+        li.className = "employee-item";
+        li.dataset.userId   = res.data.user_id;
+        li.dataset.name     = res.data.full_name;
+        li.dataset.availSet = "false";
+        li.innerHTML =
+          '<span class="emp-name">' + escapeHtml(res.data.full_name) + '</span>' +
+          '<span class="avail-status avail-not-set">' + (typeof T !== "undefined" ? T.avail_not_set || "Availability not set" : "Availability not set") + '</span>' +
+          '<button class="emp-remove-btn" data-user-id="' + res.data.user_id + '" data-name="' + escapeHtml(res.data.full_name) + '" onclick="event.stopPropagation(); confirmRemoveEmployee(this)">✕</button>';
+        // attach selection listener
+        li.addEventListener("click", function () { handleEmployeeItemClick(li); });
+        ul.appendChild(li);
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        errMsg.textContent = "Network error.";
+        errMsg.style.display = "block";
+      });
+  });
+
+  doneBtn.addEventListener("click", closeAddModal);
+});
+
+// ── Remove employee ──────────────────────────────────────────
+var _pendingRemoveId   = null;
+var _pendingRemoveName = null;
+
+function confirmRemoveEmployee(btn) {
+  _pendingRemoveId   = parseInt(btn.dataset.userId, 10);
+  _pendingRemoveName = btn.dataset.name;
+
+  var modal = document.getElementById("remove-emp-modal");
+  document.getElementById("remove-emp-msg").textContent =
+    T.remove_emp_msg.replace("{name}", _pendingRemoveName);
+  modal.style.display = "flex";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  var modal      = document.getElementById("remove-emp-modal");
+  var cancelBtn  = document.getElementById("remove-emp-cancel");
+  var confirmBtn = document.getElementById("remove-emp-confirm");
+
+  if (!modal) return;
+
+  cancelBtn.addEventListener("click", function () { modal.style.display = "none"; });
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
+  confirmBtn.addEventListener("click", function () {
+    if (!_pendingRemoveId) return;
+    confirmBtn.disabled = true;
+
+    fetch("/admin/employees/" + _pendingRemoveId, { method: "DELETE" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        confirmBtn.disabled = false;
+        modal.style.display = "none";
+        if (data.status === "removed") {
+          // Remove from DOM
+          var li = document.querySelector(".employee-item[data-user-id='" + _pendingRemoveId + "']");
+          if (li) li.remove();
+          // Deselect if was active
+          if (activeUserId === _pendingRemoveId) {
+            activeUserId       = null;
+            activeUserName     = "";
+            activeUserAvailSet = false;
+            employeeAvailability = {};
+            employeeShifts       = {};
+            renderAllCells();
+          }
+          showToast(_pendingRemoveName + " removed.", "success");
+        }
+        _pendingRemoveId = _pendingRemoveName = null;
+      })
+      .catch(function () {
+        confirmBtn.disabled = false;
+        modal.style.display = "none";
+        showToast("Network error.", "error");
+      });
+  });
+});

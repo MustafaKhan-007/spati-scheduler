@@ -859,6 +859,204 @@ small { font-size: 0.78em; }
 #export-target .calendar-cell.cell-neutral { background-color: #180010; }
 
 /* ============================================================
+   EMPLOYEE MANAGEMENT — ADD BUTTON & REMOVE BUTTON
+   ============================================================ */
+.btn-add-employee {
+  width: 100%;
+  padding: 9px 12px;
+  background: transparent;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.3px;
+}
+.btn-add-employee:hover {
+  background: rgba(255,45,120,0.12);
+}
+
+.emp-remove-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #7a3050;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+.employee-item { position: relative; }
+.employee-item:hover .emp-remove-btn { opacity: 1; }
+.emp-remove-btn:hover {
+  color: #ff4488;
+  background: rgba(255,45,120,0.15);
+}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-card {
+  background: #1e1030;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 36px 28px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 60px rgba(255,45,120,0.15), 0 24px 48px rgba(0,0,0,0.7);
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(255,45,120,0.4);
+  margin-bottom: 20px;
+}
+
+.modal-field {
+  margin-bottom: 16px;
+}
+.modal-field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+.modal-input {
+  width: 100%;
+  padding: 10px 13px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  font-size: 0.93rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255,45,120,0.15);
+}
+
+.modal-error {
+  font-size: 0.82rem;
+  color: #ff6699;
+  margin-bottom: 10px;
+  margin-top: -6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.modal-btn {
+  padding: 9px 22px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s, transform 0.1s;
+}
+.modal-btn:active { transform: scale(0.97); }
+.modal-btn:disabled { opacity: 0.5; cursor: default; }
+
+.modal-btn-cancel {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.modal-btn-cancel:hover  { background: rgba(255,255,255,0.1); }
+
+.modal-btn-confirm {
+  background: var(--accent);
+  color: #fff;
+}
+.modal-btn-confirm:hover { background: var(--accent-h); }
+
+.modal-btn-danger {
+  background: #8b1c2e;
+  color: #fca5a5;
+  border: 1px solid #c0263e;
+}
+.modal-btn-danger:hover { background: #a82035; }
+
+/* success screen inside the add modal */
+.modal-success-msg {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+.modal-credential-box {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.modal-cred-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.modal-cred-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.modal-cred-value {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+}
+.modal-cred-pw {
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(255,45,120,0.4);
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+}
+.modal-pw-warning {
+  font-size: 0.75rem;
+  color: #9b6e50;
+  font-style: italic;
+}
+.modal-body-text  { font-size: 0.9rem;  color: var(--text-light); margin-bottom: 8px; }
+.modal-warn-text  { font-size: 0.8rem;  color: #c07050; margin-bottom: 4px; }
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {

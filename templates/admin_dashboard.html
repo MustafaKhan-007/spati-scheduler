@@ -72,11 +72,22 @@
             {% else %}
             <span class="avail-status avail-not-set">{{ t.avail_not_set }}</span>
             {% endif %}
+            <button
+              class="emp-remove-btn"
+              data-user-id="{{ emp.id }}"
+              data-name="{{ emp.full_name }}"
+              title="{{ t.remove_employee }}"
+              onclick="event.stopPropagation(); confirmRemoveEmployee(this)"
+            >✕</button>
           </li>
           {% else %}
           <li class="employee-empty">{{ t.no_employees }}</li>
           {% endfor %}
         </ul>
+
+        <button id="add-employee-btn" class="btn-add-employee">
+          + {{ t.add_employee }}
+        </button>
 
         <!-- Colour legend -->
         <div class="panel-legend">
@@ -152,6 +163,60 @@
 
   <div id="toast" class="toast" style="display:none;"></div>
 
+<!-- ── Add Employee Modal ──────────────────────────────────────────────── -->
+<div id="add-emp-modal" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <h2 class="modal-title">{{ t.add_employee }}</h2>
+
+    <div id="add-emp-form-section">
+      <div class="modal-field">
+        <label>{{ t.emp_full_name }}</label>
+        <input id="new-emp-fullname" type="text" class="modal-input" placeholder="{{ t.emp_full_name_placeholder }}" autocomplete="off" />
+      </div>
+      <div class="modal-field">
+        <label>{{ t.emp_username }}</label>
+        <input id="new-emp-username" type="text" class="modal-input" placeholder="{{ t.emp_username_placeholder }}" autocomplete="off" />
+      </div>
+      <p id="add-emp-error" class="modal-error" style="display:none"></p>
+      <div class="modal-actions">
+        <button id="add-emp-cancel" class="modal-btn modal-btn-cancel">{{ t.cancel }}</button>
+        <button id="add-emp-submit" class="modal-btn modal-btn-confirm">{{ t.add_employee }}</button>
+      </div>
+    </div>
+
+    <div id="add-emp-success-section" style="display:none">
+      <p class="modal-success-msg">{{ t.emp_created_msg }}</p>
+      <div class="modal-credential-box">
+        <div class="modal-cred-row">
+          <span class="modal-cred-label">{{ t.username }}</span>
+          <span id="new-emp-show-username" class="modal-cred-value"></span>
+        </div>
+        <div class="modal-cred-row">
+          <span class="modal-cred-label">{{ t.password }}</span>
+          <span id="new-emp-show-password" class="modal-cred-value modal-cred-pw"></span>
+        </div>
+      </div>
+      <p class="modal-pw-warning">{{ t.emp_pw_warning }}</p>
+      <div class="modal-actions">
+        <button id="add-emp-done" class="modal-btn modal-btn-confirm">{{ t.done }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Remove Employee Confirmation Modal ─────────────────────────────── -->
+<div id="remove-emp-modal" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <h2 class="modal-title">{{ t.remove_employee }}</h2>
+    <p id="remove-emp-msg" class="modal-body-text"></p>
+    <p class="modal-warn-text">{{ t.remove_employee_warn }}</p>
+    <div class="modal-actions">
+      <button id="remove-emp-cancel" class="modal-btn modal-btn-cancel">{{ t.cancel }}</button>
+      <button id="remove-emp-confirm" class="modal-btn modal-btn-danger">{{ t.remove_confirm }}</button>
+    </div>
+  </div>
+</div>
+
 </div><!-- .dashboard-layout -->
 {% endblock %}
 
@@ -167,6 +232,8 @@
     toast_colour_err:   "{{ t.toast_colour_err | e }}",
     conflict_msg:       "{{ t.conflict_msg | e }}",
     slot_taken_msg:     "{{ t.slot_taken_msg | e }}",
+    username_taken:     "{{ t.emp_username_taken | e }}",
+    remove_emp_msg:     "{{ t.remove_emp_confirm_msg | e }}",
   };
 </script>
 <script src="{{ url_for('static', filename='calendar.js') }}"></script>

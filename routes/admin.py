@@ -8,8 +8,12 @@ _SLOTS  = ["morning", "evening", "night"]
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 
+import secrets, string as _string
+
 from models import db, User, Branch, Availability, Shift
 from translations import get_t
+
+_PW_CHARS = _string.ascii_letters + _string.digits
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -213,3 +217,59 @@ def assign_shift():
     db.session.commit()
 
     return jsonify({"status": "assigned", "branch_name": branch.name})
+
+
+# ── Employee management ──────────────────────────────────────────────────────
+
+@admin_bp.route("/employees", methods=["POST"])
+@login_required
+@admin_required
+def add_employee():
+    from werkzeug.security import generate_password_hash
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data"}), 400
+
+    full_name = (data.get("full_name") or "").strip()
+    username  = (data.get("username")  or "").strip().lower()
+
+    if not full_name or not username:
+        return jsonify({"error": "full_name and username are required"}), 400
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "username_taken"}), 409
+
+    password = "".join(secrets.choice(_PW_CHARS) for _ in range(8))
+    user = User(
+        username=username,
+        password_hash=generate_password_hash(password),
+        full_name=full_name,
+        role="employee",
+    )
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({
+        "status":    "created",
+        "user_id":   user.id,
+        "full_name": user.full_name,
+        "username":  user.username,
+        "password":  password,
+    })
+
+
+@admin_bp.route("/employees/<int:user_id>", methods=["DELETE"])
+@login_required
+@admin_required
+def remove_employee(user_id):
+    user = db.session.get(User, user_id)
+    if not user or user.role != "employee":
+        return jsonify({"error": "Employee not found"}), 404
+
+    # Remove all their schedule data first
+    Shift.query.filter_by(user_id=user_id).delete()
+    Availability.query.filter_by(user_id=user_id).delete()
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({"status": "removed"})
