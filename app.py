@@ -81,8 +81,11 @@ def _ensure_branches():
     """Add any missing default branches on startup (idempotent)."""
     from models import Branch
     defaults = [
-        {"name": "Spati Mitte", "location": "Berlin Mitte"},
-        {"name": "Frankfurt",   "location": "Frankfurt am Main"},
+        {"name": "Schiller",    "location": "Schillerstraße"},
+        {"name": "Turm",        "location": "Turmstraße"},
+        {"name": "Haupt",       "location": "Hauptstraße"},
+        {"name": "Kurfürst",    "location": "Kurfürstenstraße"},
+        {"name": "Frankfurter", "location": "Frankfurter Allee"},
     ]
     changed = False
     for b in defaults:
