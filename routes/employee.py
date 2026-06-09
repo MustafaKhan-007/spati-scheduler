@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 
 import re
 
-from models import db, Availability
+from models import db, User, Availability
 from translations import get_t
 
 employee_bp = Blueprint("employee", __name__, url_prefix="/employee")
@@ -143,3 +143,28 @@ def handle_accent_color():
     current_user.accent_color = color
     db.session.commit()
     return jsonify({"status": "ok", "accent_color": color})
+
+
+@employee_bp.route("/change-password", methods=["POST"])
+@login_required
+@employee_required
+def change_password():
+    from werkzeug.security import check_password_hash, generate_password_hash
+    data = request.get_json() or {}
+
+    current_pw  = data.get("current_password", "")
+    new_pw      = data.get("new_password", "")
+    confirm_pw  = data.get("confirm_password", "")
+
+    if not check_password_hash(current_user.password_hash, current_pw):
+        return jsonify({"error": "wrong_current"}), 400
+
+    if len(new_pw) < 6:
+        return jsonify({"error": "too_short"}), 400
+
+    if new_pw != confirm_pw:
+        return jsonify({"error": "mismatch"}), 400
+
+    current_user.password_hash = generate_password_hash(new_pw)
+    db.session.commit()
+    return jsonify({"status": "ok"})

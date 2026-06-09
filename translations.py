@@ -85,6 +85,17 @@ TRANSLATIONS = {
         "emp_username_taken":    "✗ That username is already taken.",
         "remove_emp_confirm_msg": "Remove {name} from the system?",
         "remove_employee_warn":  "This will also delete all their shifts and availability records.",
+
+        "change_password_title": "Change Password",
+        "change_password_btn":   "Change Password",
+        "pw_current":            "Current Password",
+        "pw_new":                "New Password",
+        "pw_confirm":            "Confirm New Password",
+        "pw_changed":            "✓ Password changed successfully.",
+        "pw_wrong_current":      "✗ Current password is incorrect.",
+        "pw_too_short":          "✗ New password must be at least 6 characters.",
+        "pw_mismatch":           "✗ New passwords do not match.",
+        "pw_error":              "✗ Something went wrong. Please try again.",
     },
 
     # ── German ────────────────────────────────────────────────
@@ -156,6 +167,17 @@ TRANSLATIONS = {
         "emp_username_taken":    "✗ Dieser Benutzername ist bereits vergeben.",
         "remove_emp_confirm_msg": "{name} aus dem System entfernen?",
         "remove_employee_warn":  "Dabei werden alle Schichten und Verfügbarkeiten gelöscht.",
+
+        "change_password_title": "Passwort ändern",
+        "change_password_btn":   "Passwort ändern",
+        "pw_current":            "Aktuelles Passwort",
+        "pw_new":                "Neues Passwort",
+        "pw_confirm":            "Neues Passwort bestätigen",
+        "pw_changed":            "✓ Passwort erfolgreich geändert.",
+        "pw_wrong_current":      "✗ Das aktuelle Passwort ist falsch.",
+        "pw_too_short":          "✗ Das neue Passwort muss mindestens 6 Zeichen lang sein.",
+        "pw_mismatch":           "✗ Die neuen Passwörter stimmen nicht überein.",
+        "pw_error":              "✗ Etwas ist schiefgelaufen. Bitte erneut versuchen.",
     },
 
     # ── Turkish ───────────────────────────────────────────────
@@ -227,6 +249,17 @@ TRANSLATIONS = {
         "emp_username_taken":    "✗ Bu kullanıcı adı zaten alınmış.",
         "remove_emp_confirm_msg": "{name} sistemden kaldırılsın mı?",
         "remove_employee_warn":  "Tüm vardiyaları ve müsaitlik kayıtları da silinecek.",
+
+        "change_password_title": "Şifreyi Değiştir",
+        "change_password_btn":   "Şifreyi Değiştir",
+        "pw_current":            "Mevcut Şifre",
+        "pw_new":                "Yeni Şifre",
+        "pw_confirm":            "Yeni Şifreyi Onayla",
+        "pw_changed":            "✓ Şifre başarıyla değiştirildi.",
+        "pw_wrong_current":      "✗ Mevcut şifre yanlış.",
+        "pw_too_short":          "✗ Yeni şifre en az 6 karakter olmalıdır.",
+        "pw_mismatch":           "✗ Yeni şifreler eşleşmiyor.",
+        "pw_error":              "✗ Bir şeyler ters gitti. Lütfen tekrar deneyin.",
     },
 }
 

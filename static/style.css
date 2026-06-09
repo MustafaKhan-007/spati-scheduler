@@ -861,6 +861,23 @@ small { font-size: 0.78em; }
 /* ============================================================
    EMPLOYEE MANAGEMENT — ADD BUTTON & REMOVE BUTTON
    ============================================================ */
+.btn-change-pw {
+  padding: 9px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.btn-change-pw:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255,45,120,0.08);
+}
+
 .btn-add-employee {
   width: 100%;
   padding: 9px 12px;
