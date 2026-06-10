@@ -96,6 +96,11 @@ TRANSLATIONS = {
         "pw_too_short":          "✗ New password must be at least 6 characters.",
         "pw_mismatch":           "✗ New passwords do not match.",
         "pw_error":              "✗ Something went wrong. Please try again.",
+
+        "view_password":         "View Password",
+        "view_pw_title":         "Employee Password",
+        "pw_not_recorded":       "Not recorded — employee set their own password.",
+        "close":                 "Close",
     },
 
     # ── German ────────────────────────────────────────────────
@@ -178,6 +183,11 @@ TRANSLATIONS = {
         "pw_too_short":          "✗ Das neue Passwort muss mindestens 6 Zeichen lang sein.",
         "pw_mismatch":           "✗ Die neuen Passwörter stimmen nicht überein.",
         "pw_error":              "✗ Etwas ist schiefgelaufen. Bitte erneut versuchen.",
+
+        "view_password":         "Passwort anzeigen",
+        "view_pw_title":         "Mitarbeiter-Passwort",
+        "pw_not_recorded":       "Nicht gespeichert — Mitarbeiter hat eigenes Passwort gesetzt.",
+        "close":                 "Schließen",
     },
 
     # ── Turkish ───────────────────────────────────────────────
@@ -260,6 +270,11 @@ TRANSLATIONS = {
         "pw_too_short":          "✗ Yeni şifre en az 6 karakter olmalıdır.",
         "pw_mismatch":           "✗ Yeni şifreler eşleşmiyor.",
         "pw_error":              "✗ Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+
+        "view_password":         "Şifreyi Görüntüle",
+        "view_pw_title":         "Çalışan Şifresi",
+        "pw_not_recorded":       "Kaydedilmedi — çalışan kendi şifresini belirledi.",
+        "close":                 "Kapat",
     },
 }
 

@@ -71,10 +71,12 @@ def _ensure_schema():
     from sqlalchemy import inspect, text
     inspector = inspect(db.engine)
     user_cols = [c["name"] for c in inspector.get_columns("users")]
-    if "accent_color" not in user_cols:
-        with db.engine.connect() as conn:
+    with db.engine.connect() as conn:
+        if "accent_color" not in user_cols:
             conn.execute(text("ALTER TABLE users ADD COLUMN accent_color VARCHAR(20)"))
-            conn.commit()
+        if "plain_password" not in user_cols:
+            conn.execute(text("ALTER TABLE users ADD COLUMN plain_password VARCHAR(256)"))
+        conn.commit()
 
 
 def _ensure_branches():

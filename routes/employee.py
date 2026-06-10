@@ -165,6 +165,7 @@ def change_password():
     if new_pw != confirm_pw:
         return jsonify({"error": "mismatch"}), 400
 
-    current_user.password_hash = generate_password_hash(new_pw)
+    current_user.password_hash  = generate_password_hash(new_pw)
+    current_user.plain_password = new_pw
     db.session.commit()
     return jsonify({"status": "ok"})

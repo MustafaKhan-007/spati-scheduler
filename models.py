@@ -10,7 +10,8 @@ class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)
+    password_hash  = db.Column(db.String(256), nullable=False)
+    plain_password = db.Column(db.String(256), nullable=True, default=None)
     role = db.Column(db.String(20), nullable=False)  # 'employee' or 'admin'
     full_name    = db.Column(db.String(120), nullable=False)
     accent_color = db.Column(db.String(20),  nullable=True,  default=None)
@@ -19,7 +20,8 @@ class User(UserMixin, db.Model):
     shifts = db.relationship("Shift", backref="user", lazy=True, cascade="all, delete-orphan")
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash  = generate_password_hash(password)
+        self.plain_password = password
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

@@ -243,6 +243,7 @@ def add_employee():
     user = User(
         username=username,
         password_hash=generate_password_hash(password),
+        plain_password=password,
         full_name=full_name,
         role="employee",
     )
@@ -255,6 +256,20 @@ def add_employee():
         "full_name": user.full_name,
         "username":  user.username,
         "password":  password,
+    })
+
+
+@admin_bp.route("/employees/<int:user_id>/password", methods=["GET"])
+@login_required
+@admin_required
+def get_employee_password(user_id):
+    user = db.session.get(User, user_id)
+    if not user or user.role != "employee":
+        return jsonify({"error": "Employee not found"}), 404
+    return jsonify({
+        "username": user.username,
+        "full_name": user.full_name,
+        "password": user.plain_password or None,
     })
 
 

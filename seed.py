@@ -77,12 +77,14 @@ def seed(reset=False):
         # Admin — always create or update password
         existing_admin = User.query.filter_by(username=ADMIN["username"]).first()
         if existing_admin:
-            existing_admin.password_hash = generate_password_hash(ADMIN["password"])
+            existing_admin.password_hash  = generate_password_hash(ADMIN["password"])
+            existing_admin.plain_password = ADMIN["password"]
             print(f"  ✓ Admin password updated")
         else:
             db.session.add(User(
                 username=ADMIN["username"],
                 password_hash=generate_password_hash(ADMIN["password"]),
+                plain_password=ADMIN["password"],
                 full_name=ADMIN["full_name"],
                 role=ADMIN["role"],
             ))
@@ -97,6 +99,7 @@ def seed(reset=False):
                 db.session.add(User(
                     username=e["username"],
                     password_hash=generate_password_hash(e["password"]),
+                    plain_password=e["password"],
                     full_name=e["full_name"],
                     role="employee",
                 ))
