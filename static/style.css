@@ -93,7 +93,7 @@ small { font-size: 0.78em; }
   background: #0a0518;
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 24px 40px 32px;
+  padding: 44px 40px 32px;
   width: 100%;
   max-width: 420px;
   box-shadow:
@@ -104,7 +104,7 @@ small { font-size: 0.78em; }
 
 .login-logo {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
 }
 
 .logo-img-login {
@@ -222,7 +222,7 @@ small { font-size: 0.78em; }
   background: var(--bg-dark);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 24px rgba(224,64,240,0.1);
-  padding: 8px 32px;
+  padding: 18px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -618,8 +618,8 @@ small { font-size: 0.78em; }
   flex-direction: column;
   gap: 14px;
   position: sticky;
-  top: 68px;
-  max-height: calc(100vh - 88px);
+  top: 84px;
+  max-height: calc(100vh - 104px);
   overflow-y: visible;  /* panel itself doesn't scroll — list does */
 }
 
