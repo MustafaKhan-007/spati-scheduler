@@ -2,8 +2,8 @@
    CSS CUSTOM PROPERTIES
    ============================================================ */
 :root {
-  --bg-dark:    #0e0618;   /* deep violet-black */
-  --bg-medium:  #180b2a;   /* lifted violet for cards & panels */
+  --bg-dark:    #000000;   /* pure black */
+  --bg-medium:  #0e0618;   /* dark violet for cards & panels */
   --accent:     #e040f0;   /* vivid magenta-violet — matches logo */
   --accent-h:   #b828cc;
   --text-light: #f0e6ff;   /* warm near-white with violet tint */
@@ -86,11 +86,11 @@ small { font-size: 0.78em; }
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  background: radial-gradient(ellipse at 50% 25%, #3a0858 0%, #0e0618 70%);
+  background: #000000;
 }
 
 .login-card {
-  background: #130826;
+  background: #0a0518;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 48px 40px 40px;
@@ -110,7 +110,7 @@ small { font-size: 0.78em; }
 .logo-img-login {
   display: block;
   margin: 0 auto 10px;
-  height: 190px;
+  height: 332px;
   width: auto;
   filter: drop-shadow(0 0 28px rgba(224,64,240,0.65));
 }
@@ -233,7 +233,7 @@ small { font-size: 0.78em; }
 }
 
 .logo-img-header {
-  height: 80px;
+  height: 140px;
   width: auto;
   filter: drop-shadow(0 0 14px rgba(224,64,240,0.6));
   display: block;
@@ -501,7 +501,7 @@ small { font-size: 0.78em; }
   padding: 9px 26px 10px;
   min-width: 130px;
   text-align: center;
-  background: #130a28;
+  background: #0a0520;
   color: var(--text-muted);
   border: 1px solid var(--border);
   border-bottom: none;
@@ -514,7 +514,7 @@ small { font-size: 0.78em; }
 }
 
 .branch-tab:not(.active):hover {
-  background: #1a0a35;
+  background: #130830;
   color: var(--text-light);
 }
 
@@ -618,8 +618,8 @@ small { font-size: 0.78em; }
   flex-direction: column;
   gap: 14px;
   position: sticky;
-  top: 74px;
-  max-height: calc(100vh - 96px);
+  top: 158px;
+  max-height: calc(100vh - 180px);
   overflow-y: visible;  /* panel itself doesn't scroll — list does */
 }
 
@@ -789,7 +789,7 @@ small { font-size: 0.78em; }
 
 /* ── Export target ─────────────────────────────────────────── */
 #export-target {
-  background: #06040e;
+  background: #050008;
   border-radius: 10px;
   padding: 22px 20px 20px;
   overflow-x: auto;
@@ -969,7 +969,7 @@ small { font-size: 0.78em; }
 }
 
 .modal-card {
-  background: #180b2a;
+  background: #0e0618;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 32px 36px 28px;
@@ -1137,7 +1137,7 @@ small { font-size: 0.78em; }
     justify-content: flex-start;
   }
   .header-left     { flex-shrink: 0; }
-  .logo-img-header { height: 38px; flex-shrink: 0; }
+  .logo-img-header { height: 66px; flex-shrink: 0; }
   .week-badge      { display: none; }
   .greeting        { display: none; }
   .header-right {
@@ -1157,7 +1157,7 @@ small { font-size: 0.78em; }
      ══════════════════════════════════════════════════════════ */
   .login-page          { padding: 16px 12px; align-items: flex-start; padding-top: 40px; }
   .login-card          { padding: 28px 20px 24px; max-width: 100%; }
-  .logo-img-login      { height: 110px; }
+  .logo-img-login      { height: 192px; }
   .lang-switcher-login { margin-bottom: 14px; }
 
   /* ══════════════════════════════════════════════════════════
@@ -1236,7 +1236,7 @@ small { font-size: 0.78em; }
     letter-spacing: 0.5px;
     transition: background 0.15s;
   }
-  .panel-mobile-toggle:hover { background: #1a0a35; }
+  .panel-mobile-toggle:hover { background: #130830; }
   .panel-toggle-icon {
     width: 16px; height: 16px;
     transition: transform 0.2s;
