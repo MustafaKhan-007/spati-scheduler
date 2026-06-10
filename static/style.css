@@ -2,17 +2,17 @@
    CSS CUSTOM PROPERTIES
    ============================================================ */
 :root {
-  --bg-dark:    #150920;   /* deep eggplant — rich but easy on the eye */
-  --bg-medium:  #1e1030;   /* slightly lifted purple for cards & panels */
-  --accent:     #ff2d78;   /* neon pink — same hue, tiny brightness lift */
-  --accent-h:   #d42065;
-  --text-light: #f2e6f7;   /* warm near-white, less eye-searing than pure #fff */
-  --text-muted: #9b6e8a;
+  --bg-dark:    #0e0618;   /* deep violet-black */
+  --bg-medium:  #180b2a;   /* lifted violet for cards & panels */
+  --accent:     #e040f0;   /* vivid magenta-violet — matches logo */
+  --accent-h:   #b828cc;
+  --text-light: #f0e6ff;   /* warm near-white with violet tint */
+  --text-muted: #8b5a9e;
   --available:  #0d6640;
   --unavail:    #821828;
   --assigned:           #1c1870;
   --assigned-elsewhere: #2e2040;
-  --border:     #4a1a40;   /* muted plum border */
+  --border:     #3a1050;   /* deep violet border */
   --radius:     8px;
 }
 
@@ -86,19 +86,19 @@ small { font-size: 0.78em; }
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  background: radial-gradient(ellipse at 50% 25%, #3a1050 0%, #100620 70%);
+  background: radial-gradient(ellipse at 50% 25%, #3a0858 0%, #0e0618 70%);
 }
 
 .login-card {
-  background: #1a0c28;
+  background: #130826;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 48px 40px 40px;
   width: 100%;
   max-width: 420px;
   box-shadow:
-    0 0 0 1px rgba(255,26,108,0.08),
-    0 0 60px rgba(255,26,108,0.12),
+    0 0 0 1px rgba(224,64,240,0.08),
+    0 0 60px rgba(224,64,240,0.12),
     0 24px 64px rgba(0,0,0,0.85);
 }
 
@@ -112,7 +112,7 @@ small { font-size: 0.78em; }
   margin: 0 auto 10px;
   height: 190px;
   width: auto;
-  filter: drop-shadow(0 0 28px rgba(255,45,120,0.6));
+  filter: drop-shadow(0 0 28px rgba(224,64,240,0.65));
 }
 
 .login-logo p {
@@ -149,11 +149,11 @@ small { font-size: 0.78em; }
 
 .form-group input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(255,26,108,0.18), 0 0 10px rgba(255,26,108,0.12);
+  box-shadow: 0 0 0 3px rgba(224,64,240,0.18), 0 0 10px rgba(224,64,240,0.12);
 }
 
 .form-group input::placeholder {
-  color: #4a2030;
+  color: #3a1048;
 }
 
 /* ── password show/hide wrapper ─────────────────────────────── */
@@ -221,7 +221,7 @@ small { font-size: 0.78em; }
 .dash-header {
   background: var(--bg-dark);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 24px rgba(255,45,120,0.1);
+  box-shadow: 0 1px 24px rgba(224,64,240,0.1);
   padding: 8px 32px;
   display: flex;
   align-items: center;
@@ -235,7 +235,7 @@ small { font-size: 0.78em; }
 .logo-img-header {
   height: 80px;
   width: auto;
-  filter: drop-shadow(0 0 14px rgba(255,45,120,0.55));
+  filter: drop-shadow(0 0 14px rgba(224,64,240,0.6));
   display: block;
 }
 
@@ -342,7 +342,7 @@ small { font-size: 0.78em; }
   font-weight: 700;
   margin-bottom: 6px;
   color: var(--accent);
-  text-shadow: 0 0 14px rgba(255,26,108,0.45);
+  text-shadow: 0 0 14px rgba(224,64,240,0.45);
 }
 
 .week-label {
@@ -404,7 +404,7 @@ small { font-size: 0.78em; }
 .day-label small {
   display: block;
   font-size: 0.73rem;
-  color: #6a3050;
+  color: #602070;
   font-weight: 400;
   margin-top: 2px;
 }
@@ -501,7 +501,7 @@ small { font-size: 0.78em; }
   padding: 9px 26px 10px;
   min-width: 130px;
   text-align: center;
-  background: #1a0e28;
+  background: #130a28;
   color: var(--text-muted);
   border: 1px solid var(--border);
   border-bottom: none;
@@ -510,11 +510,11 @@ small { font-size: 0.78em; }
   font-weight: 600;
   cursor: pointer;
   transition: background 0.14s, color 0.14s;
-  box-shadow: inset 0 1px 0 rgba(255,26,108,0.04);
+  box-shadow: inset 0 1px 0 rgba(224,64,240,0.04);
 }
 
 .branch-tab:not(.active):hover {
-  background: #221035;
+  background: #1a0a35;
   color: var(--text-light);
 }
 
@@ -524,8 +524,8 @@ small { font-size: 0.78em; }
   border-color: var(--border);
   border-bottom: 2px solid #000000;
   z-index: 1;
-  text-shadow: 0 0 10px rgba(255,26,108,0.6);
-  box-shadow: inset 0 2px 0 var(--accent), 0 0 12px rgba(255,26,108,0.1);
+  text-shadow: 0 0 10px rgba(224,64,240,0.6);
+  box-shadow: inset 0 2px 0 var(--accent), 0 0 12px rgba(224,64,240,0.1);
 }
 
 .branch-tab-empty {
@@ -562,7 +562,7 @@ small { font-size: 0.78em; }
 
 .accent-picker-hint {
   font-size: 0.76rem;
-  color: #6a3050;
+  color: #602070;
 }
 
 .color-swatches {
@@ -653,7 +653,7 @@ small { font-size: 0.78em; }
 }
 
 .search-input:focus         { border-color: var(--accent); }
-.search-input::placeholder  { color: #4a1a2a; }
+.search-input::placeholder  { color: #3a1048; }
 
 .employee-list {
   list-style: none;
@@ -789,7 +789,7 @@ small { font-size: 0.78em; }
 
 /* ── Export target ─────────────────────────────────────────── */
 #export-target {
-  background: #0a0007;
+  background: #06040e;
   border-radius: 10px;
   padding: 22px 20px 20px;
   overflow-x: auto;
@@ -812,7 +812,7 @@ small { font-size: 0.78em; }
   color: var(--accent);
   letter-spacing: -0.3px;
   text-transform: uppercase;
-  text-shadow: 0 0 14px rgba(255,26,108,0.5);
+  text-shadow: 0 0 14px rgba(224,64,240,0.5);
 }
 
 .cal-week-label {
@@ -834,7 +834,7 @@ small { font-size: 0.78em; }
 .admin-cell.cell-assigned-here:hover { filter: brightness(1.22); }
 
 /* ── Cell colour states ────────────────────────────────────── */
-.calendar-cell.cell-neutral           { background-color: #100010; }
+.calendar-cell.cell-neutral           { background-color: #0a0016; }
 .calendar-cell.cell-assigned-here     { background-color: var(--assigned); }
 .calendar-cell.cell-assigned-elsewhere { background-color: var(--assigned-elsewhere); cursor: default; }
 
@@ -892,7 +892,7 @@ small { font-size: 0.78em; }
 #export-target .day-label small { color: var(--text-muted); }
 
 /* cell-neutral inside the export target: slightly lighter so names pop */
-#export-target .calendar-cell.cell-neutral { background-color: #180010; }
+#export-target .calendar-cell.cell-neutral { background-color: #0e0018; }
 
 /* ============================================================
    EMPLOYEE MANAGEMENT — ADD BUTTON & REMOVE BUTTON
@@ -911,7 +911,7 @@ small { font-size: 0.78em; }
 .btn-change-pw:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(255,45,120,0.08);
+  background: rgba(224,64,240,0.08);
 }
 
 .btn-add-employee {
@@ -928,7 +928,7 @@ small { font-size: 0.78em; }
   letter-spacing: 0.3px;
 }
 .btn-add-employee:hover {
-  background: rgba(255,45,120,0.12);
+  background: rgba(224,64,240,0.12);
 }
 
 .emp-remove-btn {
@@ -938,7 +938,7 @@ small { font-size: 0.78em; }
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #7a3050;
+  color: #6a2080;
   font-size: 0.78rem;
   cursor: pointer;
   padding: 2px 5px;
@@ -950,8 +950,8 @@ small { font-size: 0.78em; }
 .employee-item { position: relative; }
 .employee-item:hover .emp-remove-btn { opacity: 1; }
 .emp-remove-btn:hover {
-  color: #ff4488;
-  background: rgba(255,45,120,0.15);
+  color: #e040f0;
+  background: rgba(224,64,240,0.15);
 }
 
 /* ============================================================
@@ -969,20 +969,20 @@ small { font-size: 0.78em; }
 }
 
 .modal-card {
-  background: #1e1030;
+  background: #180b2a;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 32px 36px 28px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 0 60px rgba(255,45,120,0.15), 0 24px 48px rgba(0,0,0,0.7);
+  box-shadow: 0 0 60px rgba(224,64,240,0.15), 0 24px 48px rgba(0,0,0,0.7);
 }
 
 .modal-title {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--accent);
-  text-shadow: 0 0 10px rgba(255,45,120,0.4);
+  text-shadow: 0 0 10px rgba(224,64,240,0.4);
   margin-bottom: 20px;
 }
 
@@ -1011,7 +1011,7 @@ small { font-size: 0.78em; }
 }
 .modal-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(255,45,120,0.15);
+  box-shadow: 0 0 0 3px rgba(224,64,240,0.15);
 }
 
 .modal-error {
@@ -1097,7 +1097,7 @@ small { font-size: 0.78em; }
 }
 .modal-cred-pw {
   color: var(--accent);
-  text-shadow: 0 0 8px rgba(255,45,120,0.4);
+  text-shadow: 0 0 8px rgba(224,64,240,0.4);
   font-family: "Courier New", monospace;
   font-size: 1rem;
 }
@@ -1194,7 +1194,7 @@ small { font-size: 0.78em; }
     background: transparent !important;
     color: var(--accent) !important;
     border-bottom: 2px solid var(--accent) !important;
-    text-shadow: 0 0 8px rgba(255,26,108,0.5);
+    text-shadow: 0 0 8px rgba(224,64,240,0.5);
     box-shadow: none !important;
   }
 
@@ -1236,7 +1236,7 @@ small { font-size: 0.78em; }
     letter-spacing: 0.5px;
     transition: background 0.15s;
   }
-  .panel-mobile-toggle:hover { background: #221035; }
+  .panel-mobile-toggle:hover { background: #1a0a35; }
   .panel-toggle-icon {
     width: 16px; height: 16px;
     transition: transform 0.2s;
