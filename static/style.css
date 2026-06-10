@@ -93,7 +93,7 @@ small { font-size: 0.78em; }
   background: #0a0518;
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 48px 40px 40px;
+  padding: 24px 40px 32px;
   width: 100%;
   max-width: 420px;
   box-shadow:
@@ -104,14 +104,14 @@ small { font-size: 0.78em; }
 
 .login-logo {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 12px;
 }
 
 .logo-img-login {
   display: block;
-  margin: 0 auto 10px;
-  height: 332px;
-  width: auto;
+  margin: 0 auto 6px;
+  width: 100%;
+  height: auto;
   filter: drop-shadow(0 0 28px rgba(224,64,240,0.65));
 }
 
@@ -233,8 +233,8 @@ small { font-size: 0.78em; }
 }
 
 .logo-img-header {
-  height: 140px;
-  width: auto;
+  height: auto;
+  width: 280px;
   filter: drop-shadow(0 0 14px rgba(224,64,240,0.6));
   display: block;
 }
@@ -618,8 +618,8 @@ small { font-size: 0.78em; }
   flex-direction: column;
   gap: 14px;
   position: sticky;
-  top: 158px;
-  max-height: calc(100vh - 180px);
+  top: 100px;
+  max-height: calc(100vh - 120px);
   overflow-y: visible;  /* panel itself doesn't scroll — list does */
 }
 
@@ -1137,7 +1137,7 @@ small { font-size: 0.78em; }
     justify-content: flex-start;
   }
   .header-left     { flex-shrink: 0; }
-  .logo-img-header { height: 66px; flex-shrink: 0; }
+  .logo-img-header { width: 180px; height: auto; flex-shrink: 0; }
   .week-badge      { display: none; }
   .greeting        { display: none; }
   .header-right {
@@ -1156,8 +1156,8 @@ small { font-size: 0.78em; }
      LOGIN PAGE
      ══════════════════════════════════════════════════════════ */
   .login-page          { padding: 16px 12px; align-items: flex-start; padding-top: 40px; }
-  .login-card          { padding: 28px 20px 24px; max-width: 100%; }
-  .logo-img-login      { height: 192px; }
+  .login-card          { padding: 18px 16px 22px; max-width: 100%; }
+  .logo-img-login      { width: 100%; height: auto; }
   .lang-switcher-login { margin-bottom: 14px; }
 
   /* ══════════════════════════════════════════════════════════
