@@ -97,8 +97,8 @@ small { font-size: 0.78em; }
   width: 100%;
   max-width: 420px;
   box-shadow:
-    0 0 0 1px rgba(224,64,240,0.08),
-    0 0 60px rgba(224,64,240,0.12),
+    0 0 0 1px rgba(224,64,240,0.25),
+    0 0 70px rgba(224,64,240,0.35),
     0 24px 64px rgba(0,0,0,0.85);
 }
 
@@ -149,7 +149,7 @@ small { font-size: 0.78em; }
 
 .form-group input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(224,64,240,0.18), 0 0 10px rgba(224,64,240,0.12);
+  box-shadow: 0 0 0 3px rgba(224,64,240,0.30), 0 0 12px rgba(224,64,240,0.22);
 }
 
 .form-group input::placeholder {
@@ -221,7 +221,7 @@ small { font-size: 0.78em; }
 .dash-header {
   background: var(--bg-dark);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 24px rgba(224,64,240,0.1);
+  box-shadow: 0 1px 24px rgba(224,64,240,0.25);
   padding: 18px 32px;
   display: flex;
   align-items: center;
@@ -993,7 +993,7 @@ small { font-size: 0.78em; }
   padding: 32px 36px 28px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 0 60px rgba(224,64,240,0.15), 0 24px 48px rgba(0,0,0,0.7);
+  box-shadow: 0 0 60px rgba(224,64,240,0.30), 0 24px 48px rgba(0,0,0,0.7);
 }
 
 .modal-title {
@@ -1029,7 +1029,7 @@ small { font-size: 0.78em; }
 }
 .modal-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(224,64,240,0.15);
+  box-shadow: 0 0 0 3px rgba(224,64,240,0.28);
 }
 
 .modal-error {
