@@ -325,15 +325,15 @@ function renderCell(cell) {
 function onAdminCellClick(cell) {
   if (!activeUserId || !activeBranchId) return;
 
-  var isAssignedHere = cell.dataset.shiftAssigned === "true";
-  var isAvailable    = cell.classList.contains("available");
-  var isUnavail      = cell.classList.contains("unavail");
+  var isAssignedHere      = cell.dataset.shiftAssigned === "true";
+  var isAvailable         = cell.classList.contains("available");
+  var isUnavail           = cell.classList.contains("unavail");
+  var isAssignedElsewhere = cell.classList.contains("cell-assigned-elsewhere");
 
-  // Allow override of red cells only when the employee hasn't saved availability
-  var canOverride = isUnavail && !activeUserAvailSet;
-
-  // Block clicks on grey (assigned elsewhere) and red when availability was set
-  if (!isAvailable && !isAssignedHere && !canOverride) return;
+  // Grey = employee already at another branch this slot — never override
+  if (isAssignedElsewhere) return;
+  // Only act on green, red, or blue cells
+  if (!isAvailable && !isUnavail && !isAssignedHere) return;
 
   var day  = parseInt(cell.dataset.day, 10);
   var slot = cell.dataset.slot;

@@ -827,10 +827,12 @@ small { font-size: 0.78em; }
   position: relative;
 }
 
-.admin-cell.available { cursor: pointer; }
+.admin-cell.available        { cursor: pointer; }
+.admin-cell.unavail          { cursor: pointer; }
 .admin-cell.cell-assigned-here { cursor: pointer; }
 
 .admin-cell.available:hover,
+.admin-cell.unavail:hover,
 .admin-cell.cell-assigned-here:hover { filter: brightness(1.22); }
 
 /* ── Cell colour states ────────────────────────────────────── */
