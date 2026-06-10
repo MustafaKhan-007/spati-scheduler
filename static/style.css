@@ -109,10 +109,10 @@ small { font-size: 0.78em; }
 
 .logo-img-login {
   display: block;
-  margin: 0 auto 6px;
-  width: 100%;
+  margin: 0 auto 4px;
+  width: 220px;
   height: auto;
-  filter: drop-shadow(0 0 28px rgba(224,64,240,0.65));
+  filter: drop-shadow(0 0 10px rgba(224,64,240,0.5));
 }
 
 .login-logo p {
@@ -234,8 +234,8 @@ small { font-size: 0.78em; }
 
 .logo-img-header {
   height: auto;
-  width: 280px;
-  filter: drop-shadow(0 0 14px rgba(224,64,240,0.6));
+  width: 160px;
+  filter: drop-shadow(0 0 10px rgba(224,64,240,0.5));
   display: block;
 }
 
@@ -618,8 +618,8 @@ small { font-size: 0.78em; }
   flex-direction: column;
   gap: 14px;
   position: sticky;
-  top: 100px;
-  max-height: calc(100vh - 120px);
+  top: 68px;
+  max-height: calc(100vh - 88px);
   overflow-y: visible;  /* panel itself doesn't scroll — list does */
 }
 
@@ -1137,7 +1137,7 @@ small { font-size: 0.78em; }
     justify-content: flex-start;
   }
   .header-left     { flex-shrink: 0; }
-  .logo-img-header { width: 180px; height: auto; flex-shrink: 0; }
+  .logo-img-header { width: 120px; height: auto; flex-shrink: 0; }
   .week-badge      { display: none; }
   .greeting        { display: none; }
   .header-right {
@@ -1157,7 +1157,7 @@ small { font-size: 0.78em; }
      ══════════════════════════════════════════════════════════ */
   .login-page          { padding: 16px 12px; align-items: flex-start; padding-top: 40px; }
   .login-card          { padding: 18px 16px 22px; max-width: 100%; }
-  .logo-img-login      { width: 100%; height: auto; }
+  .logo-img-login      { width: 180px; height: auto; }
   .lang-switcher-login { margin-bottom: 14px; }
 
   /* ══════════════════════════════════════════════════════════
