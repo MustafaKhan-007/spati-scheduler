@@ -95,7 +95,8 @@ def seed(reset=False):
         print(f"  {'Username':<12} {'Password':<12} {'Full name'}")
         print(f"  {'-'*12} {'-'*12} {'-'*16}")
         for e in EMPLOYEES:
-            if not User.query.filter_by(username=e["username"]).first():
+            existing = User.query.filter_by(username=e["username"]).first()
+            if not existing:
                 db.session.add(User(
                     username=e["username"],
                     password_hash=generate_password_hash(e["password"]),
@@ -105,7 +106,11 @@ def seed(reset=False):
                 ))
                 print(f"  ✓ {e['username']:<12} {e['password']:<12} {e['full_name']}")
             else:
-                print(f"  – {e['username']:<12} (already exists)")
+                if existing.plain_password is None:
+                    existing.plain_password = e["password"]
+                    print(f"  ✓ {e['username']:<12} (plain_password backfilled)")
+                else:
+                    print(f"  – {e['username']:<12} (already exists)")
 
         # Branches
         print()

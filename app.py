@@ -62,6 +62,7 @@ def create_app():
         db.create_all()
         _ensure_schema()
         _ensure_branches()
+        _backfill_plain_passwords()
 
     return app
 
@@ -77,6 +78,44 @@ def _ensure_schema():
         if "plain_password" not in user_cols:
             conn.execute(text("ALTER TABLE users ADD COLUMN plain_password VARCHAR(256)"))
         conn.commit()
+
+
+def _backfill_plain_passwords():
+    """One-time backfill: populate plain_password for seeded users that predate the column."""
+    _KNOWN = {
+        "admin":    "S4U21",
+        "amelia":   "NbrnTP3f",
+        "ammar":    "AbnFbmOH",
+        "atul":     "nKYaXRvj",
+        "aryan":    "7uff0LYT",
+        "aylin":    "H8xIZM1J",
+        "jagdeep":  "Rcoreogr",
+        "dilara":   "Nwwmq6OL",
+        "jason":    "kTkx9NIQ",
+        "jeet":     "0Wobtqn6",
+        "jenny":    "2tOy4Cqp",
+        "mayank":   "IqK3yn9F",
+        "selcuk":   "fcgMXAdx",
+        "nikki":    "9G81aSQH",
+        "zelal":    "qNgAC72q",
+        "amir":     "Fl41sNLj",
+        "atakan":   "VHWGaub5",
+        "kader":    "2Ztd26fE",
+        "mehmet":   "eVVhDIq2",
+        "nasta":    "AnHTmt9O",
+        "zilan":    "BGhnuKon",
+        "martin":   "eNo41eoP",
+        "ceyda":    "ni6JDWYl",
+        "amelka":   "gAACTP9g",
+        "helin":    "yv1plBAr",
+    }
+    changed = False
+    for user in User.query.filter(User.plain_password.is_(None)).all():
+        if user.username in _KNOWN:
+            user.plain_password = _KNOWN[user.username]
+            changed = True
+    if changed:
+        db.session.commit()
 
 
 def _ensure_branches():
